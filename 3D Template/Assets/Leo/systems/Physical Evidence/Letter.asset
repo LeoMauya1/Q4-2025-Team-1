@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f4443c45209c814f8f895e6a265a704, type: 3}
+  m_Name: Letter
+  m_EditorClassIdentifier: 
+  ItemName: Letter
+  ItemDisc:
+  - A maticulous letter.. contaning information of the scandal between Lioness and
+    the host..
+  itemDialogue:
+    charactername: 
+    characterDialogue:
+    - Hey....Found this letter, do you care to explain yourself?
+    - You found it. Well I guess I can talk about.
+    - You found it. Well I guess I can talk about.

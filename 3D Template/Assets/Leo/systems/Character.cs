@@ -1,7 +1,21 @@
 using UnityEngine;
-
-[CreateAssetMenu(fileName = "Character", menuName = "Scriptable Objects/Character")]
-public class Character : ScriptableObject
+[System.Serializable]
+public class Character
 {
-    
+    public BoxCollider interactionArea;
+    public string name;
+ 
+
+
+
+
+
+
+
+
+
+    public void AnswerQuestion(PhysicalEvidence evidence)
+    {
+
+    }
 }
