@@ -176,9 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -187,7 +185,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -508,15 +506,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8630a0b8f022d498385b60da3ad658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
-    charactername: 
-    characterDialogue: []
-  textBox: {fileID: 0}
   dialogueAnimation: {fileID: 0}
+  textBox: {fileID: 0}
   subjectName: {fileID: 0}
   subjectText: {fileID: 0}
   hasFollowUp: 0
-  followUpInteraction: {fileID: 0}
+  FollowUpInteraction: {fileID: 0}
+  dialogue:
+    charactername: 
+    characterDialogue: []
 --- !u!95 &201086408
 Animator:
   serializedVersion: 7
@@ -555,8 +553,8 @@ MonoBehaviour:
     charactername: Grey
     characterDialogue:
     - I hate the color pink
-  textBox: {fileID: 1418829219}
   dialogueAnimation: {fileID: 201086408}
+  textBox: {fileID: 1418829217}
   subjectName: {fileID: 459051214}
   subjectText: {fileID: 63868334}
 --- !u!1 &261437908
@@ -575,7 +573,7 @@ GameObject:
   - component: {fileID: 261437913}
   - component: {fileID: 261437915}
   m_Layer: 0
-  m_Name: example Character
+  m_Name: PINKIE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,6 +705,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8630a0b8f022d498385b60da3ad658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueAnimation: {fileID: 261437913}
+  textBox: {fileID: 1638948714}
+  subjectName: {fileID: 850401032}
+  subjectText: {fileID: 1870878647}
+  hasFollowUp: 1
+  FollowUpInteraction: {fileID: 201086401}
   dialogue:
     charactername: pinkie
     characterDialogue:
@@ -714,12 +718,6 @@ MonoBehaviour:
     - Pink..
     - Pink......
     - ah yes, so pink... :P
-  textBox: {fileID: 1638948716}
-  dialogueAnimation: {fileID: 261437913}
-  subjectName: {fileID: 850401032}
-  subjectText: {fileID: 1870878647}
-  hasFollowUp: 1
-  followUpInteraction: {fileID: 201086401}
 --- !u!65 &261437915
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1145,6 +1143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8630a0b8f022d498385b60da3ad658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueAnimation: {fileID: 0}
+  textBox: {fileID: 0}
+  subjectName: {fileID: 0}
+  subjectText: {fileID: 0}
+  hasFollowUp: 0
+  FollowUpInteraction: {fileID: 0}
   dialogue:
     charactername: Mysterious Letter
     characterDialogue:
@@ -1154,12 +1158,6 @@ MonoBehaviour:
     - '"Hey..I really enjoyed our date.."'
     - '"Just understand, NOBODY can know.."'
     - '"Esspecially my husband..."'
-  textBox: {fileID: 1250096840}
-  dialogueAnimation: {fileID: 465253030}
-  subjectName: {fileID: 468242655}
-  subjectText: {fileID: 1111068809}
-  hasFollowUp: 0
-  followUpInteraction: {fileID: 0}
 --- !u!95 &465253030
 Animator:
   serializedVersion: 7
@@ -2366,7 +2364,7 @@ GameObject:
   - component: {fileID: 1418829220}
   - component: {fileID: 1418829219}
   m_Layer: 5
-  m_Name: Example Character (1)
+  m_Name: HAter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,16 +7,18 @@ using System.Collections.Generic;
 public class Interactions : MonoBehaviour
 {
 
- 
-    public Dialogue dialogue;
-    public Image textBox;
     public Animator dialogueAnimation;
-    public TextMeshProUGUI subjectName;
-    public TextMeshProUGUI subjectText;
-    public bool hasFollowUp;
-    public GameObject followUpInteraction;
+      public GameObject textBox;
+       public TextMeshProUGUI subjectName;
+      public TextMeshProUGUI subjectText;
+     public bool hasFollowUp;
+     public GameObject FollowUpInteraction;
 
 
+ 
+
+
+    public Dialogue dialogue;
     public void dialogueInteraction()
     {
         FindObjectOfType<DialogueManager>().BeginConversation(dialogue);
@@ -24,5 +26,7 @@ public class Interactions : MonoBehaviour
       
        
     }
+
+    
 
 }

@@ -5,10 +5,13 @@ using UnityEngine.UI;
 public class FollowUpInteraction : MonoBehaviour
 {
     public Dialogue dialogue;
-    public Image textBox;
-    public Animator dialogueAnimation;
-    public TextMeshProUGUI subjectName;
-    public TextMeshProUGUI subjectText;
+     public Animator dialogueAnimation;
+     public GameObject textBox;
+     public TextMeshProUGUI subjectName;
+     public TextMeshProUGUI subjectText;
+
+
+    
 
 
     public void DialogueInteraction(Dialogue dialogue)
@@ -18,6 +21,9 @@ public class FollowUpInteraction : MonoBehaviour
 
 
     }
+
+
+    
 
 
 }

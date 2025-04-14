@@ -67,13 +67,14 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
+       
 
 
         //used to visually show the user whats being contained statically.
         StaticVariables.hasQuestionableEvidence = toggle;
         p_currentInteraction = StaticVariables.currentInteraction;
         evidenceList = StaticVariables.questionablEvidence;
+        Debug.Log(StaticVariables.isConversing);
 
         if (movement.IsPressed())
         {
@@ -111,6 +112,7 @@ public class PlayerController : MonoBehaviour
         if(StaticVariables.currentInteraction != null)
         {
             StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueInteraction();
+            
         }
      
    
@@ -122,11 +124,15 @@ public class PlayerController : MonoBehaviour
 
     private void Click(InputAction.CallbackContext context)
     {
-        if(StaticVariables.isConversing)
+        if(StaticVariables.isConversing && StaticVariables.initialInteraction)
         {
             FindAnyObjectByType<DialogueManager>().nextSentence();
         }
-      
+
+        if (StaticVariables.isConversing && StaticVariables.nextInteraction)
+        {
+            FindAnyObjectByType<DialogueManager>().nextFollowUpSentence();
+        }
     }
 
 
