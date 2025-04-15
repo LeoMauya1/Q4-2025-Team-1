@@ -6,6 +6,7 @@ TagManager:
   tags:
   - yaga
   - QuestionableEvidence
+  - Toilet
   layers:
   - Default
   - TransparentFX
