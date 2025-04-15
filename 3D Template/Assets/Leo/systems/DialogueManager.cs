@@ -83,8 +83,9 @@ public class DialogueManager : MonoBehaviour
 
                 Debug.Log($"{StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue.charactername} has something to say!");
                 var runnerUpInteractionDialogue = StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue;
-                StartCoroutine(FollowUpDialogue(runnerUpInteractionDialogue));
-
+                StartCoroutine(FollowUptransition(runnerUpInteractionDialogue));
+               
+                return;
 
 
 
@@ -94,13 +95,11 @@ public class DialogueManager : MonoBehaviour
                 //var runnerUpDialogue = StaticVariables.runnerUpInteraction.GetComponent<Idialogue>();
                 Debug.Log("nobody cared to further extrapolate");
                 StartCoroutine(DialogueEnd());
+                return;
             }
 
 
-
-
-            StartCoroutine(DialogueEnd());
-            return;
+       
         }else
         {
              sentenceTracker = dialoguePiece.Count;
@@ -174,10 +173,10 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("conversationEnded", false);
             //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
-            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
+            //mainCharacter.GetComponent<MeshRenderer>().enabled = true;
             Debug.Log("nanana");
-            Camera.main.transform.position = oGposition;
-            Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(-camOffset);
+            //Camera.main.transform.position = oGposition;
+           // Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(-camOffset);
             StaticVariables.isConversing = false;
 
         }
@@ -206,7 +205,7 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator FollowUpDialogue(Dialogue dialogue)
     {
-        if(StaticVariables.runnerUpInteraction != null)
+        if(StaticVariables.runnerUpInteraction != null && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction != null)
         {
             StaticVariables.runnerUpInteraction = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction;
         } 
@@ -250,27 +249,25 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator FollowUpDialogueEnd()
     {
-   
-        if (StaticVariables.isConversing)
+         
+            if(StaticVariables.isConversing)
         {
-   
             StaticVariables.nextInteraction = false;
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.SetActive(false);
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.SetBool("InteractionEnded", true);
-            StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.SetBool("conversationEnded", true);
-            //StaticVariables.isConversing = false;
+
             yield return new WaitForSeconds(1);
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.SetBool("InteractionEnded", false);
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.SetBool("conversationEnded", false);
             //yield return new WaitUntil(() => StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(false);
-            //mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-            //StaticVariables.isConversing = false;
+
             Debug.Log("UIYYYYYYYYYYYYYYYYYYYYYY");
-            Camera.main.transform.position = oGposition;
-            Camera.main.transform.rotation = Camera.main.transform.rotation * Quaternion.Euler(-camOffset);
-            StaticVariables.isConversing =  false;
+
+            StaticVariables.isConversing = false;
         }
+            
+        
 
 
     }
@@ -291,7 +288,7 @@ public class DialogueManager : MonoBehaviour
 
                 Debug.Log($"{StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue.charactername} has something to say!");
                 var followUpDialogue = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue;
-                StartCoroutine(FollowUpDialogue(followUpDialogue));
+                StartCoroutine(Conversationextendor(followUpDialogue));
                 return;
 
 
@@ -302,17 +299,18 @@ public class DialogueManager : MonoBehaviour
                 StartCoroutine(FollowUpDialogueEnd());
                 return;
             }
-
-
         }
-        else
-        {
 
+           
+              
+        //if (dialoguePiece.Count > 0 && StaticVariables.nextInteraction == false)
+       // {
+            Debug.Log("you still got more to say?!");
             sentenceTracker = dialoguePiece.Count;
             string dialogue = dialoguePiece.Dequeue();
-            StopCoroutine(LetterByLetterFollowUp(dialogue));
+            StopAllCoroutines();
             StartCoroutine(LetterByLetterFollowUp(dialogue));
-        }
+     //   }
 
 
 
@@ -353,10 +351,20 @@ public class DialogueManager : MonoBehaviour
 
 
 
+    private IEnumerator FollowUptransition(Dialogue runnerUpInteractionDialogue)
+    {
+        StartCoroutine(DialogueEnd());
+        yield return new WaitForSeconds(1.3f);
+        StartCoroutine(FollowUpDialogue(runnerUpInteractionDialogue));
+    }
 
+    private IEnumerator Conversationextendor(Dialogue runnerUpInteractionDialogue)
+    {
+        StartCoroutine(FollowUpDialogueEnd());
+        yield return new WaitForSeconds(1.3f);
+        StartCoroutine(FollowUpDialogue(runnerUpInteractionDialogue));
 
-
-
+    }
 
 
 
