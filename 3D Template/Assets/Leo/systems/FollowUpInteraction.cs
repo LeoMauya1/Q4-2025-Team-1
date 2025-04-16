@@ -9,6 +9,7 @@ public class FollowUpInteraction : MonoBehaviour
      public GameObject textBox;
      public TextMeshProUGUI subjectName;
      public TextMeshProUGUI subjectText;
+    public Transform FollowUpcharacterCam;
 
 
     
