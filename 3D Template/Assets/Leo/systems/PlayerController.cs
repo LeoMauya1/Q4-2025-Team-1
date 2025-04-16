@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         evidenceList = StaticVariables.questionablEvidence;
         Debug.Log(StaticVariables.isConversing);
 
-        if (movement.IsPressed())
+        if (movement.IsPressed() && StaticVariables.isConversing == false)
         {
             direction = movement.ReadValue<Vector2>();
             moveDirection = transform.right * direction.x + transform.forward * direction.y;

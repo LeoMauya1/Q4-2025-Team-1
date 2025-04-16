@@ -33,13 +33,21 @@ public class FPS : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX = look.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
-        float mouseY = look.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        player.Rotate(Vector3.up * mouseX);
+        if(StaticVariables.isConversing == false)
+        {
+            float mouseX = look.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;
+            float mouseY = look.ReadValue<Vector2>().y * mouseSensitivity * Time.deltaTime;
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            player.Rotate(Vector3.up * mouseX);
+        }
+        if(StaticVariables.isConversing == true)
+        {
+            Debug.Log("convverrsinn");
+        }
 
     }
 }

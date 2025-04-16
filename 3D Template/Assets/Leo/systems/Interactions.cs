@@ -13,12 +13,13 @@ public class Interactions : MonoBehaviour
       public TextMeshProUGUI subjectText;
      public bool hasFollowUp;
      public GameObject FollowUpInteraction;
+    public Transform interactionCamera;
 
-
- 
+ public List<Dialogue> itemDialogue;
 
 
     public Dialogue dialogue;
+  
     public void dialogueInteraction()
     {
         FindObjectOfType<DialogueManager>().BeginConversation(dialogue);

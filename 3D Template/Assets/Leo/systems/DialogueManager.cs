@@ -12,18 +12,13 @@ public class DialogueManager : MonoBehaviour
     // public Image txtBox;
 
     private bool transitionComplete;
-    public static bool canInteractAgain = false;
     public Vector3 camOffset;
     public GameObject mainCharacter;
-    public bool OBJECTION;
-    [Header("CAMERAS")]
-    public Transform characterCam;
-    public Camera mainCharacterCam;
     private Vector3 oGposition;
     public int debug;
     private Queue<string> dialoguePiece;
     public static int sentenceTracker;
-    public bool yayaya;
+  
 
     private void Start()
     {
@@ -58,8 +53,8 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-
-        StartCoroutine(DialogueStart(dialogue));
+        var interactionCamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
+        StartCoroutine(DialogueStart(dialogue, interactionCamera));
         Debug.Log("Skib");
 
     }
@@ -132,7 +127,7 @@ public class DialogueManager : MonoBehaviour
     }
 
 
-    IEnumerator DialogueStart(Dialogue dialogue)
+    IEnumerator DialogueStart(Dialogue dialogue, Transform targetCamera)
     {
 
         StaticVariables.initialInteraction = true;
@@ -141,7 +136,6 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("interactionEnabled", false);
         StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.SetActive(true);
-        canInteractAgain = false;
         StaticVariables.currentInteraction.GetComponent<Interactions>().subjectName.text = dialogue.charactername;
         dialoguePiece.Clear();
         //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
@@ -222,7 +216,6 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.SetBool("interactionEnabled", false);
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(true);
-        canInteractAgain = false;
         Debug.Log(dialogue.charactername);
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().subjectName.text = dialogue.charactername;
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(true);
