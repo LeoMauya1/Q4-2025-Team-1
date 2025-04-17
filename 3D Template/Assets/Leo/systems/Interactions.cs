@@ -12,6 +12,7 @@ public class Interactions : MonoBehaviour
        public TextMeshProUGUI subjectName;
       public TextMeshProUGUI subjectText;
      public bool hasFollowUp;
+    public bool doubleDown;
      public GameObject FollowUpInteraction;
     public Transform interactionCamera;
 

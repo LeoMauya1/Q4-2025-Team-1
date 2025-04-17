@@ -37,6 +37,25 @@ public class DialogueManager : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private float smoothTime = 0.3f;
     private Quaternion targetRotation;
+
+
+
+
+
+
+    // VERY IMPORTAMT BUG, follow ups have some loop holes, like if yoy have a back to back conversation it requires each runner up to have their follow up bool selected. But if you were talk to that person in specific the it starts the follow up regardless.
+
+
+
+
+
+
+
+
+
+
+
+
     private void Start()
     {
         dialoguePiece = new Queue<string>();
@@ -103,8 +122,8 @@ public class DialogueManager : MonoBehaviour
 
             {
 
-                Debug.Log($"{StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue.charactername} has something to say!");
-                var runnerUpInteractionDialogue = StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue;
+                Debug.Log($"{StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue1.charactername} has something to say!");
+                var runnerUpInteractionDialogue = StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue1;
                 var characterCam = StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().FollowUpcharacterCam;
                 StartCoroutine(FollowUptransition(runnerUpInteractionDialogue, characterCam));
                
@@ -232,8 +251,12 @@ public class DialogueManager : MonoBehaviour
             Debug.Log("start");
             mainCharacter.GetComponent<MeshRenderer>().enabled = false;
 
-            mainCamera.transform.position = playerCam.position;
-            mainCamera.transform.rotation = mainCamera.transform.rotation * Quaternion.Euler(camOffset);
+            startPosition = mainCamera.transform.position;
+            startRotation = mainCamera.transform.rotation;
+            targetPosition = playerCam.position;
+            targetRotation = Quaternion.Euler(camOffset) * startRotation;
+            transitionTimer = 0f;
+            isTransitioning = true;
             return;
         }
 
@@ -344,7 +367,7 @@ public class DialogueManager : MonoBehaviour
             followUpConversattionStarted = false;
             Debug.Log(StaticVariables.isConversing);
             Debug.Log(StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp);
-            if ( StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp == false)
+            if ( StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown == false)
             {
 
 
@@ -370,12 +393,12 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePiece.Count == 0)
         {
             //CHECKS IF SOMEONE ELSE HAS SOMETHING TO SAY.
-            if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp)
+            if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown)
 
             {
 
-                Debug.Log($"{StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue.charactername} has something to say!");
-                var followUpDialogue = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue;
+                Debug.Log($"{StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue1.charactername} has something to say!");
+                var followUpDialogue = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue2;
                 var followUpCharacterCam = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().FollowUpcharacterCam;
                 StartCoroutine(Conversationextendor(followUpDialogue, followUpCharacterCam));
                 return;

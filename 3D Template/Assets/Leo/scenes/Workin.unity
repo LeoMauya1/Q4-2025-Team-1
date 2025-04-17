@@ -372,10 +372,10 @@ GameObject:
   - component: {fileID: 201086405}
   - component: {fileID: 201086404}
   - component: {fileID: 201086403}
-  - component: {fileID: 201086406}
   - component: {fileID: 201086409}
   - component: {fileID: 201086408}
   - component: {fileID: 201086407}
+  - component: {fileID: 201086410}
   m_Layer: 0
   m_Name: Hater
   m_TagString: Untagged
@@ -476,27 +476,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201086401}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &201086406
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 201086401}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &201086407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,17 +488,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8630a0b8f022d498385b60da3ad658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueAnimation: {fileID: 0}
-  textBox: {fileID: 0}
-  subjectName: {fileID: 0}
-  subjectText: {fileID: 0}
-  hasFollowUp: 1
+  dialogueAnimation: {fileID: 201086408}
+  textBox: {fileID: 1418829217}
+  subjectName: {fileID: 459051214}
+  subjectText: {fileID: 63868334}
+  hasFollowUp: 0
+  doubleDown: 1
   FollowUpInteraction: {fileID: 1998724725}
   interactionCamera: {fileID: 1836088569}
   itemDialogue: []
   dialogue:
-    charactername: 
-    characterDialogue: []
+    charactername: Grey
+    characterDialogue:
+    - KONIIICHHIIIWAA! :D
+    - have you heard.....part 7 of jojo's bizzare adventure was announced!!!!! :DDDDDDDDDD
+    - HEH! JOJO FRIDAYS ARE BACK... ZAA WARUUDOO LOLZZZ XD
+    - YARE YARE XDDDDDD ROFFL
+    - eh?         smell? What are you talking about....ah. You are sorely mistaken!
+      Tis my immense aura >:)
+    - :D
 --- !u!95 &201086408
 Animator:
   serializedVersion: 7
@@ -554,15 +541,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c747f6ea76a3e4ab5ebcad0b94f812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
+  dialogue1:
     charactername: Grey
     characterDialogue:
-    - I hate the color pink
+    - not a fan of the color pink myself...
+  dialogue2:
+    charactername: 
+    characterDialogue: []
   dialogueAnimation: {fileID: 201086408}
   textBox: {fileID: 1418829217}
   subjectName: {fileID: 459051214}
   subjectText: {fileID: 63868334}
   FollowUpcharacterCam: {fileID: 1836088569}
+--- !u!65 &201086410
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201086401}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.86, y: 2.6, z: 2.06}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &261437908
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +728,7 @@ MonoBehaviour:
   subjectName: {fileID: 850401032}
   subjectText: {fileID: 1870878647}
   hasFollowUp: 1
+  doubleDown: 0
   FollowUpInteraction: {fileID: 201086401}
   interactionCamera: {fileID: 1642536783}
   itemDialogue:
@@ -1200,6 +1212,7 @@ MonoBehaviour:
   subjectName: {fileID: 0}
   subjectText: {fileID: 0}
   hasFollowUp: 0
+  doubleDown: 0
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 0}
   itemDialogue: []
@@ -3995,10 +4008,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7c747f6ea76a3e4ab5ebcad0b94f812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue:
+  dialogue1:
     charactername: Red
     characterDialogue:
-    - yea that color hella wack man!
+    - no?? huhh?
+  dialogue2:
+    charactername: 
+    characterDialogue:
+    - yea the color hella wack man!!
   dialogueAnimation: {fileID: 1998724727}
   textBox: {fileID: 1661466688}
   subjectName: {fileID: 1320527320}
@@ -4023,7 +4040,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2, z: 1}
+  m_Size: {x: 1.86, y: 2.6, z: 2.06}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &1998724730
 CapsuleCollider:
@@ -4113,17 +4130,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af8630a0b8f022d498385b60da3ad658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueAnimation: {fileID: 0}
-  textBox: {fileID: 0}
-  subjectName: {fileID: 0}
-  subjectText: {fileID: 0}
+  dialogueAnimation: {fileID: 1998724727}
+  textBox: {fileID: 1661466688}
+  subjectName: {fileID: 1320527320}
+  subjectText: {fileID: 1639233230}
   hasFollowUp: 0
+  doubleDown: 0
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 410995871}
   itemDialogue: []
   dialogue:
-    charactername: 
-    characterDialogue: []
+    charactername: Red
+    characterDialogue:
+    - 'it STAAAANKKK IN HERE '
+    - GRAY DONT LET THE WATER RUN THROUGH HIS BOOOTY IN THE SHOWER XDDDDD (YOU SMELL
+      PUTRID)
 --- !u!1 &2026672111
 GameObject:
   m_ObjectHideFlags: 0
