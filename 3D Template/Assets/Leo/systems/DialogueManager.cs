@@ -23,6 +23,20 @@ public class DialogueManager : MonoBehaviour
     private bool initialConversationStarted;
     private bool followUpConversattionStarted;
 
+
+
+
+    private bool isTransitioning = false;
+    private float transitionDuration = 0.3f;
+    private float transitionTimer = 1f;
+
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+    private Vector3 targetPosition;
+    
+    private Vector3 velocity = Vector3.zero;
+    private float smoothTime = 0.3f;
+    private Quaternion targetRotation;
     private void Start()
     {
         dialoguePiece = new Queue<string>();
@@ -63,7 +77,17 @@ public class DialogueManager : MonoBehaviour
     }
     private void Update()
     {
+        if (isTransitioning)
+        {
+            mainCamera.transform.position = Vector3.SmoothDamp(mainCamera.transform.position, targetPosition, ref velocity, smoothTime);
+            mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, targetRotation, Time.deltaTime * 5f);
 
+  
+            if (Vector3.Distance(mainCamera.transform.position, targetPosition) < 0.05f && Quaternion.Angle(mainCamera.transform.rotation, targetRotation) < 1f)
+            {
+                isTransitioning = false;
+            }
+        }
     }
 
     public void nextSentence()
@@ -220,10 +244,16 @@ public class DialogueManager : MonoBehaviour
             //lerping mechanics here. 
 
             Debug.Log("next person transition");
-            mainCharacter.GetComponent<MeshRenderer>().enabled = false;
+         
+             Debug.Log("next person transition");
+             mainCharacter.GetComponent<MeshRenderer>().enabled = false;
 
-            mainCamera.transform.position = playerCam.position;
-            mainCamera.transform.rotation = mainCamera.transform.rotation * Quaternion.Euler(camOffset);
+             startPosition = mainCamera.transform.position;
+             startRotation = mainCamera.transform.rotation;
+             targetPosition = playerCam.position;
+             targetRotation = Quaternion.Euler(camOffset) * startRotation; 
+             transitionTimer = 0f;
+             isTransitioning = true;
 
 
 
@@ -277,6 +307,7 @@ public class DialogueManager : MonoBehaviour
 
         //yield return new WaitUntil(() => StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
         transitionComplete = true;
+        followUpConversattionStarted = true;
         Camtransition(characterCamera);
         foreach (string dialogues in dialogue.characterDialogue)
         {
@@ -299,6 +330,7 @@ public class DialogueManager : MonoBehaviour
          
             if(StaticVariables.isConversing)
         {
+
             StaticVariables.nextInteraction = false;
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.SetActive(false);
             yield return new WaitForSeconds(0.3f);
@@ -310,10 +342,20 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.isConversing = false;
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
             followUpConversattionStarted = false;
-            Camtransition(characterCam);
+            Debug.Log(StaticVariables.isConversing);
+            Debug.Log(StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp);
+            if ( StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp == false)
+            {
+
+
+                mainCamera.transform.position = oGposition;
+            }
+
+               Camtransition(characterCam);
         }
-            
-        
+
+       
+
 
 
     }
