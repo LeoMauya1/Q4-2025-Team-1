@@ -330,8 +330,8 @@ Transform:
   m_GameObject: {fileID: 397203071}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5609703, y: 1.3494725, z: -26.358627}
-  m_LocalScale: {x: 1, y: 0.0779, z: 1}
+  m_LocalPosition: {x: 1.5609703, y: 1.458, z: -26.358627}
+  m_LocalScale: {x: 1, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1942688353}
@@ -852,7 +852,6 @@ GameObject:
   - component: {fileID: 1333878318}
   - component: {fileID: 1333878317}
   - component: {fileID: 1333878316}
-  - component: {fileID: 1333878315}
   - component: {fileID: 1333878314}
   - component: {fileID: 1333878313}
   m_Layer: 0
@@ -886,7 +885,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 84008c9f9f9c3d54987d547dbb91a03f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1022,7 +1021,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1193,7 +1192,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1886,7 +1885,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 10
+        scalar: 15
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -5720,27 +5719,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!65 &1333878315
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333878312}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1333878316
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6254,6 +6232,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   particle: {fileID: 1333878312}
+  difCounter: 0
 --- !u!65 &1956735192
 BoxCollider:
   m_ObjectHideFlags: 0

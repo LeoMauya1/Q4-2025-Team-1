@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public GameObject cloth;
     public LayerMask puzzleLayer;
     public GameObject particle;
+    public int difCounter = 0;
 
     private void Start()
     {
@@ -34,6 +36,13 @@ public class NewMonoBehaviourScript : MonoBehaviour
         
     }
 
+     IEnumerator WaterParticles()
+    {
+        particle.GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(0.5f);
+        particle.GetComponent<ParticleSystem>().Stop();
+    }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -41,18 +50,25 @@ public class NewMonoBehaviourScript : MonoBehaviour
         {
             counter++;
             Debug.Log(counter);
-            particle.GetComponent<ParticleSystem>().Play();
+            
 
 
             if(counter >= 10)
             {
                 unClogged = true;
+                
             }
 
             if (unClogged == true)
             {
                 Debug.Log("wow");
                 cloth.gameObject.SetActive(true);
+            }
+
+            if(difCounter < counter)
+            {
+                StartCoroutine(WaterParticles());
+                
             }
         }
     }
