@@ -10,6 +10,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     public bool unClogged = false;
     public int counter = 0;
     public GameObject cloth;
+    public LayerMask puzzleLayer;
+    public GameObject particle;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -22,20 +25,24 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, CameraZDistance);
         Vector3 NewWorldPosition = mainCamera.ScreenToWorldPoint(ScreenPosition);
-        transform.position = NewWorldPosition;
+        var raycast = Camera.main.ScreenPointToRay(Input.mousePosition);
+         if (!Physics.Raycast(raycast, 999, puzzleLayer))
+        {
+            GetComponent<Rigidbody>().position = NewWorldPosition;
+        }
+
+        
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        GetComponent<Rigidbody>().freezeRotation = false;
-       
-    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Toilet"))
         {
             counter++;
+            Debug.Log(counter);
+            particle.GetComponent<ParticleSystem>().Play();
+
 
             if(counter >= 10)
             {
