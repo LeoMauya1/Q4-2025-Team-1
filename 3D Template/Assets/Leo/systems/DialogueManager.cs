@@ -91,7 +91,7 @@ public class DialogueManager : MonoBehaviour
 
         var interactionCamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
         StartCoroutine(DialogueStart(dialogue, interactionCamera));
-        Debug.Log("Skib");
+
 
     }
     private void Update()
@@ -132,6 +132,7 @@ public class DialogueManager : MonoBehaviour
 
 
             }
+            
             else
             {
                 //var runnerUpDialogue = StaticVariables.runnerUpInteraction.GetComponent<Idialogue>();
@@ -218,7 +219,7 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
             initialConversationStarted = false;
-            Debug.Log("nanana");
+     
             //Camtransition
             StaticVariables.isConversing = false;
 
@@ -235,7 +236,7 @@ public class DialogueManager : MonoBehaviour
             //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-            Debug.Log("AHHHHHHHHHHHHHHHHHHHHHH");
+      
             mainCamera.transform.position = oGposition;
             initialConversationStarted = false;
             StaticVariables.isConversing = false;
@@ -248,7 +249,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (initialConversationStarted)
         {
-            Debug.Log("start");
+     
             mainCharacter.GetComponent<MeshRenderer>().enabled = false;
 
             startPosition = mainCamera.transform.position;
@@ -266,9 +267,6 @@ public class DialogueManager : MonoBehaviour
         {
             //lerping mechanics here. 
 
-            Debug.Log("next person transition");
-         
-             Debug.Log("next person transition");
              mainCharacter.GetComponent<MeshRenderer>().enabled = false;
 
              startPosition = mainCamera.transform.position;
@@ -313,7 +311,7 @@ public class DialogueManager : MonoBehaviour
         } 
         else
         {
-            Debug.Log("else");
+   
             StaticVariables.runnerUpInteraction = StaticVariables.currentInteraction.GetComponent<Interactions>().FollowUpInteraction;
         }
 
@@ -323,7 +321,7 @@ public class DialogueManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(true);
-        Debug.Log(dialogue.charactername);
+  
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().subjectName.text = dialogue.charactername;
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(true);
         dialoguePiece.Clear();
@@ -360,7 +358,7 @@ public class DialogueManager : MonoBehaviour
             //yield return new WaitUntil(() => StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(false);
 
-            Debug.Log("UIYYYYYYYYYYYYYYYYYYYYYY");
+
 
             StaticVariables.isConversing = false;
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
@@ -393,13 +391,14 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePiece.Count == 0)
         {
             //CHECKS IF SOMEONE ELSE HAS SOMETHING TO SAY.
-            if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown)
+            if (StaticVariables.currentInteraction.GetComponent<Interactions>().doubleDown && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction != null   )
 
             {
 
-                Debug.Log($"{StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue1.charactername} has something to say!");
+                //Debug.Log($"{StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue2.charactername} has something to say!");
                 var followUpDialogue = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().dialogue2;
                 var followUpCharacterCam = StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction.GetComponent<FollowUpInteraction>().FollowUpcharacterCam;
+
                 StartCoroutine(Conversationextendor(followUpDialogue, followUpCharacterCam));
                 return;
 
@@ -418,7 +417,7 @@ public class DialogueManager : MonoBehaviour
               
         //if (dialoguePiece.Count > 0 && StaticVariables.nextInteraction == false)
        // {
-            Debug.Log("you still got more to say?!");
+       
             sentenceTracker = dialoguePiece.Count;
             string dialogue = dialoguePiece.Dequeue();
             StopAllCoroutines();

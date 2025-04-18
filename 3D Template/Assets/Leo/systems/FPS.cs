@@ -46,7 +46,7 @@ public class FPS : MonoBehaviour
         }
         if(StaticVariables.isConversing == true)
         {
-            Debug.Log("convverrsinn");
+
         }
 
     }

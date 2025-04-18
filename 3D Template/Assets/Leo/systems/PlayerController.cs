@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [Header("static Containers")]
     public GameObject P_followUpInteraction;
     public GameObject p_currentInteraction;
+  
     public List<PhysicalEvidence> evidenceList = new List<PhysicalEvidence>();
 
 
@@ -68,13 +69,14 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
        
-
+       
 
         //used to visually show the user whats being contained statically.
         StaticVariables.hasQuestionableEvidence = toggle;
         p_currentInteraction = StaticVariables.currentInteraction;
         evidenceList = StaticVariables.questionablEvidence;
-        Debug.Log(StaticVariables.isConversing);
+        P_followUpInteraction = StaticVariables.runnerUpInteraction;
+   
 
         if (movement.IsPressed() && StaticVariables.isConversing == false)
         {

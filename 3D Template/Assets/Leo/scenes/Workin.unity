@@ -492,7 +492,7 @@ MonoBehaviour:
   textBox: {fileID: 1418829217}
   subjectName: {fileID: 459051214}
   subjectText: {fileID: 63868334}
-  hasFollowUp: 0
+  hasFollowUp: 1
   doubleDown: 1
   FollowUpInteraction: {fileID: 1998724725}
   interactionCamera: {fileID: 1836088569}
@@ -728,7 +728,7 @@ MonoBehaviour:
   subjectName: {fileID: 850401032}
   subjectText: {fileID: 1870878647}
   hasFollowUp: 1
-  doubleDown: 0
+  doubleDown: 1
   FollowUpInteraction: {fileID: 201086401}
   interactionCamera: {fileID: 1642536783}
   itemDialogue:
@@ -4013,7 +4013,7 @@ MonoBehaviour:
     characterDialogue:
     - no?? huhh?
   dialogue2:
-    charactername: 
+    charactername: Red
     characterDialogue:
     - yea the color hella wack man!!
   dialogueAnimation: {fileID: 1998724727}
