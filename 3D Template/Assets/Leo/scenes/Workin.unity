@@ -493,7 +493,7 @@ MonoBehaviour:
   subjectName: {fileID: 459051214}
   subjectText: {fileID: 63868334}
   hasFollowUp: 1
-  doubleDown: 1
+  doubleDown: 0
   FollowUpInteraction: {fileID: 1998724725}
   interactionCamera: {fileID: 1836088569}
   itemDialogue: []
@@ -2157,13 +2157,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195843550}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.10998398, y: -0.5989545, z: 0.08362694, w: -0.78877354}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.104494095, y: 0.3189321, z: 0.035603523}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2026672113}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1195843556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4011,7 +4011,9 @@ MonoBehaviour:
   dialogue1:
     charactername: Red
     characterDialogue:
-    - no?? huhh?
+    - 'i second that
+
+'
   dialogue2:
     charactername: Red
     characterDialogue:

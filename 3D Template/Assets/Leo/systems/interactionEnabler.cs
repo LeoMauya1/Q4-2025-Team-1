@@ -38,12 +38,10 @@ public class interactionEnabler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // box.enabled = false;
-        // player.enabled = true;
+    
         StaticVariables.canInteract = false;
         StaticVariables.currentInteraction = null;
-        // interactText.gameObject.SetActive(false);
-        //   Camera.main.transform.position = OgCamPos.position;
-        //   Camera.main.transform.rotation = OgCamPos.rotation;
+        StaticVariables.runnerUpInteraction = null; 
+      
     }
 }
