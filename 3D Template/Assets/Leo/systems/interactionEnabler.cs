@@ -20,17 +20,7 @@ public class interactionEnabler : MonoBehaviour
 
         StaticVariables.canInteract = true;
 
-        if(other.CompareTag("QuestionableEvidence"))
-        {
-            EvidencePlaceholder evidencePlaceholder = other.GetComponent<EvidencePlaceholder>();
-
-
-            Debug.Log(evidencePlaceholder);
-            StaticVariables.questionablEvidence.Add(evidencePlaceholder.evidence);
-            
-        }
-
-        StaticVariables.currentInteraction = other.gameObject;
+       
 
 
     }
@@ -39,9 +29,6 @@ public class interactionEnabler : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
     
-        StaticVariables.canInteract = false;
-        StaticVariables.currentInteraction = null;
-        StaticVariables.runnerUpInteraction = null; 
-      
+    
     }
 }

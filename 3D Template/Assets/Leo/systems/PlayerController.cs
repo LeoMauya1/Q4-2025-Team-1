@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 100f;
     private Vector3 moveDirection;
     public CharacterController characterController;
+    private bool isLooking;
 
     [Header("static Containers")]
     public GameObject P_followUpInteraction;
@@ -68,14 +69,31 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-       
-       
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 5f))
+        {
+          
+            StaticVariables.currentInteraction = hitInfo.collider.gameObject;
+            Debug.Log(hitInfo);
+
+            if(hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider.gameObject.tag == "QuestionableEvidence")
+            {
+                isLooking = true;
+            }
+        }
+        else
+        {
+            StaticVariables.currentInteraction = null;
+           isLooking = false;
+            Debug.Log("not hit");
+        }
+
 
         //used to visually show the user whats being contained statically.
         StaticVariables.hasQuestionableEvidence = toggle;
         p_currentInteraction = StaticVariables.currentInteraction;
         evidenceList = StaticVariables.questionablEvidence;
         P_followUpInteraction = StaticVariables.runnerUpInteraction;
+ 
    
 
         if (movement.IsPressed() && StaticVariables.isConversing == false)
@@ -113,7 +131,17 @@ public class PlayerController : MonoBehaviour
 
         if(StaticVariables.currentInteraction != null)
         {
-            StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueInteraction();
+            if(StaticVariables.currentInteraction.GetComponent<Interactions>() != null)
+            {
+                StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueInteraction();
+            }
+
+
+ 
+            if(StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>() != null)
+            {
+               FindAnyObjectByType<playerInventory>().inventoryUpdate.Invoke();
+            }
             
         }
      
@@ -126,12 +154,12 @@ public class PlayerController : MonoBehaviour
 
     private void Click(InputAction.CallbackContext context)
     {
-        if(StaticVariables.isConversing && StaticVariables.initialInteraction)
+        if(StaticVariables.isConversing && StaticVariables.initialInteraction && StaticVariables.sentenceCompletion == true)
         {
             FindAnyObjectByType<DialogueManager>().nextSentence();
         }
 
-        if (StaticVariables.isConversing && StaticVariables.nextInteraction)
+        if (StaticVariables.isConversing && StaticVariables.nextInteraction && StaticVariables.sentenceCompletion == true)
         {
             FindAnyObjectByType<DialogueManager>().nextFollowUpSentence();
         }
@@ -139,10 +167,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-    //private IEnumerator EndofDilogue()
-    //{
-      
-   // }
+   
 
 
 

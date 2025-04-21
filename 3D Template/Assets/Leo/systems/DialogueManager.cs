@@ -33,10 +33,11 @@ public class DialogueManager : MonoBehaviour
     private Vector3 startPosition;
     private Quaternion startRotation;
     private Vector3 targetPosition;
-    private Vector4 direction;
+    private Vector3 direction;
     private Vector3 velocity = Vector3.zero;
     private float smoothTime = 0.3f;
     private Quaternion targetRotation;
+    public string sentences;
 
 
 
@@ -63,7 +64,7 @@ public class DialogueManager : MonoBehaviour
 
         //Debug.Log(mainCharacterCam.transform.position);
         //Debug.Log(Camera.main.transform.position);
-
+     
 
     }
 
@@ -167,9 +168,20 @@ public class DialogueManager : MonoBehaviour
         
         foreach (char letter in sentence.ToCharArray())
         {
+            if (letter == '.')
+            {
+
+                StaticVariables.currentInteraction.GetComponent<Interactions>().subjectText.text += letter;
+                StaticVariables.sentenceCompletion = false;
+                yield return new WaitForSeconds(0.1f);
+            }
+
             StaticVariables.currentInteraction.GetComponent<Interactions>().subjectText.text += letter;
-            yield return null;
+            StaticVariables.sentenceCompletion = false;
+            yield return  new WaitForSeconds(0.03f);
         }
+        StaticVariables.sentenceCompletion = true;
+
     }
 
     void EndDialogue()
@@ -259,9 +271,11 @@ public class DialogueManager : MonoBehaviour
             startPosition = mainCamera.transform.position;
             startRotation = mainCamera.transform.rotation;
             targetPosition = playerCam.position;
-            direction = new Vector4(targetRotation.x, targetRotation.y-90, targetRotation.z, targetRotation.w);
-            Debug.Log(direction); 
-            targetRotation = Quaternion.Euler(direction);
+
+            Vector3 invertedDirection = -playerCam.transform.forward;
+            Debug.Log(invertedDirection); 
+
+            targetRotation = Quaternion.LookRotation(invertedDirection);
             transitionTimer = 0f;
             isTransitioning = true;
             return;
@@ -371,22 +385,23 @@ public class DialogueManager : MonoBehaviour
             followUpConversattionStarted = false;
             Debug.Log(StaticVariables.isConversing);
             Debug.Log(StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp);
-            if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown == false)
-            {
-
-
-                mainCamera.transform.position = oGposition;
-                mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-                yield return null;
-
-            }
+            
 
 
         
                Camtransition(characterCam);
         }
+        if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown == false && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction == null)
+        {
 
-       
+
+            mainCamera.transform.position = oGposition;
+            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
+            yield return null;
+
+        }
+
+
 
 
 
@@ -465,9 +480,13 @@ public class DialogueManager : MonoBehaviour
         StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().subjectText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
+           
+
             StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().subjectText.text += letter;
-            yield return null;
+            StaticVariables.sentenceCompletion = false;
+            yield return new WaitForSeconds(0.03f);
         }
+        StaticVariables.sentenceCompletion = true;
     }
 
 
@@ -484,12 +503,10 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator Conversationextendor(Dialogue runnerUpInteractionDialogue, Transform characterCam)
     {
         Debug.Log("skisbsisb");
-      if(StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown)
-        {
-            StartCoroutine(FollowUpDialogueEnd(characterCam));
+       StartCoroutine(FollowUpDialogueEnd(characterCam));
             yield return new WaitForSeconds(0.3f);
             StartCoroutine(FollowUpDialogue(runnerUpInteractionDialogue, characterCam));
-        }
+        
         
       
 

@@ -16,9 +16,9 @@ MonoBehaviour:
   ItemDisc:
   - A maticulous letter.. contaning information of the scandal between Lioness and
     the host..
+  itemImage: {fileID: 0}
   itemDialogue:
     charactername: 
     characterDialogue:
     - Hey....Found this letter, do you care to explain yourself?
-    - You found it. Well I guess I can talk about.
     - You found it. Well I guess I can talk about.

@@ -14,5 +14,6 @@ public class StaticVariables
     public static bool isConversing = false;
     public static bool initialInteraction;
     public static bool nextInteraction;
+    public static bool sentenceCompletion;
    
 }
