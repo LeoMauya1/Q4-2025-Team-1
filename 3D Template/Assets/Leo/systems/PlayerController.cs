@@ -68,15 +68,19 @@ public class PlayerController : MonoBehaviour
 
 
     private void Update()
+    
     {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 5f))
+
+       
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f))
         {
           
-            StaticVariables.currentInteraction = hitInfo.collider.gameObject;
+          
             Debug.Log(hitInfo);
 
             if(hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider.gameObject.tag == "QuestionableEvidence")
             {
+                StaticVariables.currentInteraction = hitInfo.collider.gameObject;
                 isLooking = true;
             }
         }
@@ -140,7 +144,15 @@ public class PlayerController : MonoBehaviour
  
             if(StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>() != null)
             {
-               FindAnyObjectByType<playerInventory>().inventoryUpdate.Invoke();
+                if(FindAnyObjectByType<playerInventory>().playerEvidenceList.Contains(StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>().evidence))
+                {
+                    Debug.Log("already in your inventory!");
+                    return;
+                }
+
+                FindAnyObjectByType<playerInventory>().playerEvidenceList.Add(StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>().evidence);
+
+                FindAnyObjectByType<playerInventory>().inventoryUpdate.Invoke();
             }
             
         }

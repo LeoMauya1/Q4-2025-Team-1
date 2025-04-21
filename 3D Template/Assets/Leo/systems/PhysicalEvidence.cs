@@ -9,7 +9,8 @@ public class PhysicalEvidence : ScriptableObject
     public string ItemName;
     [TextArea(5, 10)]
     public string[] ItemDisc;
-    public Image itemImage;
+    public Sprite itemImage;
+    public bool addedToList;
    
 
 
