@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.UI;
 using Unity.Collections;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         inputActions = new ActionMaps();
+
     }
     private void OnEnable()
     {
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviour
 
         interact.performed -= Interact;
         click.performed -= Click;
+        
     }
 
 
@@ -71,15 +74,16 @@ public class PlayerController : MonoBehaviour
     
     {
 
-       
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f))
+        //var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); Idk why this breaks the letter by letter
+        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f))
         {
-          
-          
-            Debug.Log(hitInfo);
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 3f, Color.red);
 
-            if(hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider.gameObject.tag == "QuestionableEvidence")
+
+
+            if (hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider.gameObject.tag == "QuestionableEvidence")
             {
+                Debug.Log(hitInfo);
                 StaticVariables.currentInteraction = hitInfo.collider.gameObject;
                 isLooking = true;
             }
@@ -151,8 +155,8 @@ public class PlayerController : MonoBehaviour
                 }
 
                 FindAnyObjectByType<playerInventory>().playerEvidenceList.Add(StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>().evidence);
-
                 FindAnyObjectByType<playerInventory>().inventoryUpdate.Invoke();
+
             }
             
         }

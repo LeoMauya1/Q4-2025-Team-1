@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_Inventory : MonoBehaviour
 {
@@ -23,10 +24,10 @@ public class UI_Inventory : MonoBehaviour
     }
     void Update()
     {
+     
 
-        
 
-        
+
 
     }
 
@@ -42,16 +43,16 @@ public class UI_Inventory : MonoBehaviour
            
             Debug.Log("updating UI");
 
-            foreach (var item in p_Inventory)
-            {
              
    
-                
+
+            var ItemSpace = Instantiate(itemSpace);
+            ItemSpace.GetComponent<Image>().sprite = StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>().evidence.itemImage;
+            ItemSpace.transform.SetParent(gameObject.transform, false);
+            
              
-                var ItemSpace = Instantiate(itemSpace);
-                itemSpace.GetComponent<Image>().sprite = item.itemImage;
-                ItemSpace.transform.SetParent(gameObject.transform, false);
-            }
+            
+            
         }
     }
 }

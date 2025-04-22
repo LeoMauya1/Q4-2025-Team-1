@@ -154,6 +154,98 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""fccaadf5-a61a-4921-8d76-565b1cf6b0ff"",
+            ""actions"": [
+                {
+                    ""name"": ""Player Tab"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ca835f7-5852-4ea0-9944-7f884b4b6268"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu Game space navigation"",
+                    ""type"": ""Value"",
+                    ""id"": ""1a2e7441-6a4b-461e-8bf8-00c033243051"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""59fa46db-1765-44f0-9e6b-d5a0c2f8d40a"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Player Tab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""f217c351-157a-4d0d-975a-2caa4347cc5c"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Game space navigation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e76a080d-0e61-49ad-9fd7-674d48fd8911"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Game space navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""c0b79ee9-af16-4bc0-afa3-09594df17bb8"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Game space navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""dccf9e60-3cd4-4f58-84d6-2ebef50ba323"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Game space navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""988ccf34-1ebb-455d-8d1d-8073afa37897"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu Game space navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -164,11 +256,16 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
         m_PlayerActions_Look = m_PlayerActions.FindAction("Look", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Click = m_PlayerActions.FindAction("Click", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_PlayerTab = m_UI.FindAction("Player Tab", throwIfNotFound: true);
+        m_UI_MenuGamespacenavigation = m_UI.FindAction("Menu Game space navigation", throwIfNotFound: true);
     }
 
     ~@ActionMaps()
     {
         UnityEngine.Debug.Assert(!m_PlayerActions.enabled, "This will cause a leak and performance issues, ActionMaps.PlayerActions.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, ActionMaps.UI.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -296,11 +393,70 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_PlayerTab;
+    private readonly InputAction m_UI_MenuGamespacenavigation;
+    public struct UIActions
+    {
+        private @ActionMaps m_Wrapper;
+        public UIActions(@ActionMaps wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayerTab => m_Wrapper.m_UI_PlayerTab;
+        public InputAction @MenuGamespacenavigation => m_Wrapper.m_UI_MenuGamespacenavigation;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void AddCallbacks(IUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @PlayerTab.started += instance.OnPlayerTab;
+            @PlayerTab.performed += instance.OnPlayerTab;
+            @PlayerTab.canceled += instance.OnPlayerTab;
+            @MenuGamespacenavigation.started += instance.OnMenuGamespacenavigation;
+            @MenuGamespacenavigation.performed += instance.OnMenuGamespacenavigation;
+            @MenuGamespacenavigation.canceled += instance.OnMenuGamespacenavigation;
+        }
+
+        private void UnregisterCallbacks(IUIActions instance)
+        {
+            @PlayerTab.started -= instance.OnPlayerTab;
+            @PlayerTab.performed -= instance.OnPlayerTab;
+            @PlayerTab.canceled -= instance.OnPlayerTab;
+            @MenuGamespacenavigation.started -= instance.OnMenuGamespacenavigation;
+            @MenuGamespacenavigation.performed -= instance.OnMenuGamespacenavigation;
+            @MenuGamespacenavigation.canceled -= instance.OnMenuGamespacenavigation;
+        }
+
+        public void RemoveCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IPlayerActionsActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnPlayerTab(InputAction.CallbackContext context);
+        void OnMenuGamespacenavigation(InputAction.CallbackContext context);
     }
 }

@@ -15,5 +15,6 @@ public class StaticVariables
     public static bool initialInteraction;
     public static bool nextInteraction;
     public static bool sentenceCompletion;
+    public static bool gamePaused;
    
 }
