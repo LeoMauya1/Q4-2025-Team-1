@@ -871,7 +871,12 @@ MonoBehaviour:
   doubleDown: 0
   FollowUpInteraction: {fileID: 1998724725}
   interactionCamera: {fileID: 1836088569}
-  itemDialogue: []
+  itemDialogues: []
+  itemDialogue:
+    charactername: Grey
+    characterDialogue:
+    - 'OHHH!!! ITS TYLERS MIC! '
+    - WHY DO YOU HAVE THIS??? RETURN THIS AT ONCE
   dialogue:
     charactername: Grey
     characterDialogue:
@@ -1244,19 +1249,22 @@ MonoBehaviour:
   doubleDown: 1
   FollowUpInteraction: {fileID: 201086401}
   interactionCamera: {fileID: 1642536783}
+  itemDialogues:
+  - charactername: Pinkie
+    characterDialogue:
+    - huh? a microphone...?
+    - well I know nothing of it. You should probably ask someone else.
+  - charactername: Pinkie
+    characterDialogue:
+    - heh! thats some letter...
+  - charactername: Pinkie
+    characterDialogue:
+    - im allergic
   itemDialogue:
-  - charactername: 
-    characterDialogue: []
-  - charactername: 
-    characterDialogue: []
-  - charactername: 
-    characterDialogue: []
-  - charactername: 
-    characterDialogue: []
-  - charactername: 
-    characterDialogue: []
-  - charactername: 
-    characterDialogue: []
+    charactername: Pinkie
+    characterDialogue:
+    - huh? a microphone...?
+    - well I know nothing of it. You should probably ask someone else.
   dialogue:
     charactername: pinkie
     characterDialogue:
@@ -2329,7 +2337,13 @@ MonoBehaviour:
   doubleDown: 0
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 1148065151}
-  itemDialogue: []
+  itemDialogues: []
+  itemDialogue:
+    charactername: Tyler The Creator
+    characterDialogue:
+    - yahh.. thanks man.
+    - been looking for this!
+    - <3
   dialogue:
     charactername: 'Tyler '
     characterDialogue:
@@ -6445,7 +6459,12 @@ MonoBehaviour:
   doubleDown: 0
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 410995871}
-  itemDialogue: []
+  itemDialogues: []
+  itemDialogue:
+    charactername: Red
+    characterDialogue:
+    - what.
+    - weird.
   dialogue:
     charactername: Red
     characterDialogue:

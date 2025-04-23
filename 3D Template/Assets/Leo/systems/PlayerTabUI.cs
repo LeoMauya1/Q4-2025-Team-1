@@ -37,6 +37,16 @@ public class PlayerTabUI : MonoBehaviour
 
     }
 
+    public void tabOutInteraction()
+    {
+        bool isActive = !playerTab.activeSelf;
+        playerTab.SetActive(!playerTab.activeSelf);
+        Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;
+        StaticVariables.gamePaused = isActive ? StaticVariables.gamePaused = true : StaticVariables.gamePaused = false;
+    }
+
+
+
 
 
 

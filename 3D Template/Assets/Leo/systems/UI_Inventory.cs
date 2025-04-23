@@ -48,6 +48,7 @@ public class UI_Inventory : MonoBehaviour
 
             var ItemSpace = Instantiate(itemSpace);
             ItemSpace.GetComponent<Image>().sprite = StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>().evidence.itemImage;
+            ItemSpace.GetComponent<EvidencePlaceholder>().evidence = StaticVariables.currentInteraction.GetComponent<EvidencePlaceholder>().evidence;
             ItemSpace.transform.SetParent(gameObject.transform, false);
             
              

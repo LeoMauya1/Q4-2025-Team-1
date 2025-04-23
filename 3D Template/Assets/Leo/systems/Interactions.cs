@@ -16,9 +16,9 @@ public class Interactions : MonoBehaviour
      public GameObject FollowUpInteraction;
     public Transform interactionCamera;
 
- public List<Dialogue> itemDialogue;
+    public List<Dialogue> itemDialogues;
 
-
+    public Dialogue itemDialogue;
     public Dialogue dialogue;
   
     public void dialogueInteraction()
@@ -27,6 +27,10 @@ public class Interactions : MonoBehaviour
 
       
        
+    }
+    public void ItemInteraction(int itemID)
+    {
+        FindAnyObjectByType<DialogueManager>().BeginItemInteraction(itemID);
     }
 
     

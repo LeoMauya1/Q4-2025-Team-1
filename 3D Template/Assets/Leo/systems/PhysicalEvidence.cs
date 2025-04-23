@@ -10,6 +10,7 @@ public class PhysicalEvidence : ScriptableObject
     [TextArea(5, 10)]
     public string[] ItemDisc;
     public Sprite itemImage;
+    public int IDnumber;
   
    
 

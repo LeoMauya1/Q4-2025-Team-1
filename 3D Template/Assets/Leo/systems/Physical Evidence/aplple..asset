@@ -16,6 +16,7 @@ MonoBehaviour:
   ItemDisc:
   - 
   itemImage: {fileID: 21300000, guid: 1b392eb8ff4c09f4886877999a33f901, type: 3}
+  IDnumber: 2
   itemDialogue:
     charactername: 
     characterDialogue: []
