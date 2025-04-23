@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEditor.Overlays;
 
 public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
 {
@@ -12,6 +13,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     private bool canInteract;
     public PhysicalEvidence currentItem;
     private int passedID;
+    private RectTransform previosPos;
     private void Awake()
     {
         m_rectTransform = GetComponent<RectTransform>();
@@ -19,11 +21,22 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     }
     public void OnBeginDrag (PointerEventData evedata)
     {
+        Debug.Log("grabbing item position");
+        previosPos = evedata.pointerDrag.GetComponent<RectTransform>();
+        Debug.Log(previosPos);
+        if (evedata.pointerDrag != null)
+        {
+            previosPos.anchoredPosition = evedata.pointerDrag.GetComponentInParent<RectTransform>().anchoredPosition;
+
+        }
+
 
     }
     public void OnEndDrag(PointerEventData evedata)
     {
+        
 
+        
     }
     public void OnDrag(PointerEventData eventdata)
     {
@@ -60,7 +73,9 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("mouse click down");
+        //var pointer = eventData;
+        // pointer.pointerDrag.GetComponent<RectTransform>().anchoredPosition = previosPos.anchoredPosition;
+        
     }
  
     public void OnDrop(PointerEventData eventData)
@@ -71,6 +86,11 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
             FindAnyObjectByType<PlayerTabUI>().tabOutInteraction();
             passedID = gameObject.GetComponent<EvidencePlaceholder>().evidence.IDnumber;
             StaticVariables.currentInteraction.GetComponent<Interactions>().ItemInteraction(passedID);
+        }
+         else
+        {
+            Debug.Log(previosPos.position);
+            eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = FindAnyObjectByType<UI_Inventory>().itemPos.anchoredPosition;
         }
     }
 }

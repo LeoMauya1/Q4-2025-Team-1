@@ -2143,6 +2143,7 @@ MonoBehaviour:
   p_Inventory: []
   itemSpace: {fileID: 2578118526048897750, guid: f4b4762433aae654d81c02b9a0623c79,
     type: 3}
+  itemPos: {fileID: 0}
 --- !u!1 &620795650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2337,7 +2338,21 @@ MonoBehaviour:
   doubleDown: 0
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 1148065151}
-  itemDialogues: []
+  itemDialogues:
+  - charactername: Tyler the creator
+    characterDialogue:
+    - Freaky ah letter lol
+    - yahhhh looool hey jane ah letter
+    - you make ma earfquake...lolz
+  - charactername: Tyler The Creator
+    characterDialogue:
+    - yahh.. thanks man.
+    - been looking for this!
+    - <3
+  - charactername: Tyler The Creator
+    characterDialogue:
+    - apppllleesss.... yaahhh I love apples man
+    - so redd looll... you make my earfquaakee..
   itemDialogue:
     charactername: Tyler The Creator
     characterDialogue:
@@ -6459,7 +6474,11 @@ MonoBehaviour:
   doubleDown: 0
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 410995871}
-  itemDialogues: []
+  itemDialogues:
+  - charactername: 
+    characterDialogue: []
+  - charactername: 
+    characterDialogue: []
   itemDialogue:
     charactername: Red
     characterDialogue:

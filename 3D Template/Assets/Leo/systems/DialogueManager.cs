@@ -100,13 +100,16 @@ public class DialogueManager : MonoBehaviour
     {
            var currentInteraction = StaticVariables.currentInteraction.GetComponent<Interactions>().itemDialogues;
         
-
-           
+        if(id >= 0 && id < currentInteraction.Count)
+        {
+            Debug.Log("yah yha");  
             var interactionCamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
             StaticVariables.itemInteraction = true;
             var selectedDialogue = currentInteraction[id];
             StartCoroutine(DialogueStart(selectedDialogue, interactionCamera));
 
+
+        }
            
         
         
