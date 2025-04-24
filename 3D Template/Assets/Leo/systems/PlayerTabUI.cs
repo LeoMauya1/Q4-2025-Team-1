@@ -29,6 +29,8 @@ public class PlayerTabUI : MonoBehaviour
 
     private void PlayerTabOpened(InputAction.CallbackContext context)
     {
+        StaticVariables.currentInteraction = null;
+        StaticVariables.runnerUpInteraction = null;
         bool isActive = !playerTab.activeSelf;
         playerTab.SetActive(!playerTab.activeSelf);
         Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;

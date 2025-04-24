@@ -106,6 +106,7 @@ public class DialogueManager : MonoBehaviour
             var interactionCamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
             StaticVariables.itemInteraction = true;
             var selectedDialogue = currentInteraction[id];
+            
             StartCoroutine(DialogueStart(selectedDialogue, interactionCamera));
 
 
@@ -217,7 +218,7 @@ public class DialogueManager : MonoBehaviour
         oGposition = Camera.main.transform.position;
         StaticVariables.initialInteraction = true;
         StaticVariables.isConversing = true;
-  
+        
         StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("interactionEnabled", true);
        
         yield return new WaitForSeconds(0.3f);
@@ -245,7 +246,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (StaticVariables.itemInteraction == true)
         {
-            
+            StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("InteractionEnded", true);
@@ -266,6 +267,7 @@ public class DialogueManager : MonoBehaviour
 
         if (StaticVariables.isConversing && StaticVariables.currentInteraction.GetComponent<Interactions>().hasFollowUp == false)
         {
+            StaticVariables.promptInterogation = false;
             Debug.Log("one more!");
             StaticVariables.initialInteraction = false;
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
@@ -285,6 +287,7 @@ public class DialogueManager : MonoBehaviour
 
         if (StaticVariables.isConversing && StaticVariables.currentInteraction.GetComponent<Interactions>().hasFollowUp)
         {
+            StaticVariables.promptInterogation = false;
             StaticVariables.itemInteraction =false;
             Debug.Log("thats all folks!");
             StaticVariables.initialInteraction = false;

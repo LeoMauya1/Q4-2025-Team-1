@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour
     
     {
 
+        Debug.Log(StaticVariables.currentInteraction);
+
         //var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); Idk why this breaks the letter by letter
         if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f))
         {
@@ -87,13 +89,20 @@ public class PlayerController : MonoBehaviour
                 StaticVariables.currentInteraction = hitInfo.collider.gameObject;
                 isLooking = true;
             }
+
+
         }
         else
         {
-            StaticVariables.currentInteraction = null;
-           isLooking = false;
+            if(StaticVariables.promptInterogation == false)
+            {
+                StaticVariables.currentInteraction = null;
+            }
+          
+            isLooking = false;
             Debug.Log("not hit");
         }
+
 
 
         //used to visually show the user whats being contained statically.

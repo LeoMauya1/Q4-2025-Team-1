@@ -17,5 +17,6 @@ public class StaticVariables
     public static bool sentenceCompletion;
     public static bool gamePaused;
     public static bool itemInteraction;
+    public static bool promptInterogation;
    
 }

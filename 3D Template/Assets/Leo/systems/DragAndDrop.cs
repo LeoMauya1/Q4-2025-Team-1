@@ -13,7 +13,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     private bool canInteract;
     public PhysicalEvidence currentItem;
     private int passedID;
-    private RectTransform previosPos;
+    private Vector2 previosPos;
     private void Awake()
     {
         m_rectTransform = GetComponent<RectTransform>();
@@ -21,14 +21,8 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     }
     public void OnBeginDrag (PointerEventData evedata)
     {
-        Debug.Log("grabbing item position");
-        previosPos = evedata.pointerDrag.GetComponent<RectTransform>();
-        Debug.Log(previosPos);
-        if (evedata.pointerDrag != null)
-        {
-            previosPos.anchoredPosition = evedata.pointerDrag.GetComponentInParent<RectTransform>().anchoredPosition;
 
-        }
+        previosPos = m_rectTransform.anchoredPosition;
 
 
     }
@@ -53,8 +47,10 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                 if(hitInfo.collider.gameObject.GetComponent<Interactions>().itemDialogue != null)
                 {
                     StaticVariables.currentInteraction = hitInfo.collider.gameObject;
-                    Debug.Log(StaticVariables.currentInteraction);
+                    Debug.Log(hitInfo.collider.gameObject);
                     canInteract = true;
+                    StaticVariables.promptInterogation = true;
+                    
                 }
                
             }
@@ -73,11 +69,10 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //var pointer = eventData;
-        // pointer.pointerDrag.GetComponent<RectTransform>().anchoredPosition = previosPos.anchoredPosition;
-        
+      
+
     }
- 
+
     public void OnDrop(PointerEventData eventData)
     {
         if(canInteract)
@@ -85,12 +80,13 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
             Debug.Log("commence investigation!");
             FindAnyObjectByType<PlayerTabUI>().tabOutInteraction();
             passedID = gameObject.GetComponent<EvidencePlaceholder>().evidence.IDnumber;
+          
             StaticVariables.currentInteraction.GetComponent<Interactions>().ItemInteraction(passedID);
         }
          else
         {
-            Debug.Log(previosPos.position);
-            eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = FindAnyObjectByType<UI_Inventory>().itemPos.anchoredPosition;
+            Debug.Log(previosPos);
+            m_rectTransform.anchoredPosition = previosPos;
         }
     }
 }
