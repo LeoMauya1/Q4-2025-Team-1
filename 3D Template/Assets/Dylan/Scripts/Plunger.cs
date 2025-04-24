@@ -65,7 +65,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
                 cloth.gameObject.SetActive(true);
             }
 
-            if(difCounter < counter)
+            if(difCounter < counter && counter <= 10)
             {
                 StartCoroutine(WaterParticles());
                 
