@@ -6161,7 +6161,8 @@ MonoBehaviour:
   characterController: {fileID: 2026672112}
   P_followUpInteraction: {fileID: 0}
   p_currentInteraction: {fileID: 0}
-  evidenceList: []
+  evidenceList:
+  - {fileID: 11400000, guid: 3a463e1686bded349835be5e0604748a, type: 2}
 --- !u!23 &1938315348
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6475,9 +6476,16 @@ MonoBehaviour:
   FollowUpInteraction: {fileID: 0}
   interactionCamera: {fileID: 410995871}
   itemDialogues:
-  - charactername: 
-    characterDialogue: []
-  - charactername: 
+  - charactername: RED
+    characterDialogue:
+    - meh, dont care
+  - charactername: RED
+    characterDialogue:
+    - return it to tyler
+  - charactername: RED
+    characterDialogue:
+    - COUSIN!
+  - charactername: RED
     characterDialogue: []
   itemDialogue:
     charactername: Red

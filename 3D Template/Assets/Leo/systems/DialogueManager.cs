@@ -244,24 +244,29 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator DialogueEnd()
     {
+
+        
         if (StaticVariables.itemInteraction == true)
         {
+            StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("InteractionEnded", true);
             // textBoxAnimation.SetBool("conversationEnded", true);
             yield return new WaitForSeconds(0.3f);
-            StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("InteractionEnded", false);
-            StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("conversationEnded", false);
-            //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
-            StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
+            Debug.Log("why");
             StaticVariables.itemInteraction = false;
-            StaticVariables.itemInteraction = false;
-            var itemConvoTransition = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
-            Camtransition(itemConvoTransition);
-            
+            var playcam = StaticVariables.dragAndDropInteraction.GetComponent<Interactions>().interactionCamera;
+            Debug.Log(StaticVariables.dragAndDropInteraction);
+            StaticVariables.isConversing = false;
+            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
+            mainCamera.transform.position = oGposition;
+            //Camtransition(playcam);
+            StaticVariables.dragAndDropInteraction = null;
             yield break;
+
+
         }
 
 
@@ -280,7 +285,7 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
       
-            //mainCamera.transform.position = oGposition;
+            mainCamera.transform.position = oGposition;
             initialConversationStarted = false;
             StaticVariables.isConversing = false;
         }

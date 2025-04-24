@@ -77,28 +77,31 @@ public class PlayerController : MonoBehaviour
         Debug.Log(StaticVariables.currentInteraction);
 
         //var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); Idk why this breaks the letter by letter
-        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f))
+        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f) || StaticVariables.promptInterogation)
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 3f, Color.red);
+           
 
 
-
-            if (hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider.gameObject.tag == "QuestionableEvidence")
+           
+            if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider != null && hitInfo.collider.gameObject.tag == "QuestionableEvidence")
             {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 3f, Color.red);
                 Debug.Log(hitInfo);
                 StaticVariables.currentInteraction = hitInfo.collider.gameObject;
                 isLooking = true;
             }
 
+            Debug.Log("Item investigation commencing");
+
 
         }
         else
         {
-            if(StaticVariables.promptInterogation == false)
-            {
-                StaticVariables.currentInteraction = null;
-            }
-          
+     
+            
+            StaticVariables.currentInteraction = null;
+            
+
             isLooking = false;
             Debug.Log("not hit");
         }

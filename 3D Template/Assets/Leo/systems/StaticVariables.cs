@@ -18,5 +18,6 @@ public class StaticVariables
     public static bool gamePaused;
     public static bool itemInteraction;
     public static bool promptInterogation;
+    public static GameObject dragAndDropInteraction;
    
 }
