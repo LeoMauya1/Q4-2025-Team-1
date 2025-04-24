@@ -37,7 +37,7 @@ public class FPS : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+      
         if(StaticVariables.isConversing == false && StaticVariables.gamePaused == false)
         {
             float mouseX = look.ReadValue<Vector2>().x * mouseSensitivity * Time.deltaTime;

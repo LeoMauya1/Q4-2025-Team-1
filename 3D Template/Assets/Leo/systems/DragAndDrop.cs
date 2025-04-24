@@ -14,6 +14,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     public PhysicalEvidence currentItem;
     private int passedID;
     private Vector2 previosPos;
+    public GameObject hoveredOverCharacter;
     private void Awake()
     {
         m_rectTransform = GetComponent<RectTransform>();
@@ -47,6 +48,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
                 if(hitInfo.collider.gameObject.GetComponent<Interactions>().itemDialogue != null)
                 {
                     StaticVariables.currentInteraction = hitInfo.collider.gameObject;
+                    StaticVariables.dragAndDropInteraction = hitInfo.collider.gameObject;  
                     Debug.Log(hitInfo.collider.gameObject);
                     canInteract = true;
                     StaticVariables.promptInterogation = true;
