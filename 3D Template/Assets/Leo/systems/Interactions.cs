@@ -18,12 +18,14 @@ public class Interactions : MonoBehaviour
 
     public List<Dialogue> itemDialogues;
 
-    public Dialogue itemDialogue;
+
     public Dialogue dialogue;
+    public List<Dialogue> dialogueOptions;
+    
   
     public void dialogueInteraction()
     {
-        FindObjectOfType<DialogueManager>().BeginConversation(dialogue);
+        FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[StaticVariables.storyArc]);
 
       
        

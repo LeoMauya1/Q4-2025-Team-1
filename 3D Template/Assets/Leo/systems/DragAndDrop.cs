@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using UnityEditor.Overlays;
 using UnityEngine.UI;
 using TMPro;
 
@@ -79,7 +78,7 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
             {
                 Debug.Log(hitInfo.collider);
 
-                if(hitInfo.collider.gameObject.GetComponent<Interactions>().itemDialogue != null)
+                if(hitInfo.collider.gameObject.GetComponent<Interactions>().itemDialogues != null)
                 {
                     StaticVariables.currentInteraction = hitInfo.collider.gameObject;
                     StaticVariables.dragAndDropInteraction = hitInfo.collider.gameObject;  

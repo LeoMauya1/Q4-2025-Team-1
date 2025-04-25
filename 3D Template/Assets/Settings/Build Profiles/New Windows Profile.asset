@@ -21,9 +21,11 @@ MonoBehaviour:
   m_OverrideGlobalSceneList: 1
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/SampleScene.unity
-  - m_enabled: 1
+    m_path: Assets/Main Game/Scenes/Main Game.unity
+  - m_enabled: 0
     m_path: Assets/Leo/scenes/Workin.unity
+  - m_enabled: 0
+    m_path: Assets/Scenes/SampleScene.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

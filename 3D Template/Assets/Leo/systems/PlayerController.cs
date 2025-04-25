@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.InteropServices;
-using UnityEditor.Rendering;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -90,6 +89,10 @@ public class PlayerController : MonoBehaviour
                 StaticVariables.currentInteraction = hitInfo.collider.gameObject;
                 wasLooking = true;
             }
+            if(hitInfo.collider.gameObject.tag == "QuestionableEvidence")
+            {
+                hitInfo.collider.gameObject.GetComponent<MeshRenderer>();
+            }
 
             Debug.Log("Item investigation commencing");
 
@@ -98,12 +101,7 @@ public class PlayerController : MonoBehaviour
         else
         {
      
-            if(wasLooking == true)
-            {
-                StaticVariables.currentInteraction = null;
-            }
-
-
+        
 
          
             Debug.Log("not hit");

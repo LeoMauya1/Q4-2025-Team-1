@@ -45,7 +45,12 @@ public class DialogueManager : MonoBehaviour
 
 
  
-
+    //BWOOOOOOAHHH BRAIN BLAST, OKAY SO FOR BACK AND FORTH DIALOGUE. HAVE IT CHECK IF THE PLAYER WILL ADD FEEDBACK IN THE DIALOGUE END
+    // AND THEN IF ITS TRUE USE THE REFERENCE TO THE PLAYER TO START INTERACTION RESPONSE, IN SOME WAY PASS IN THE CHARACTER THAT'S SPEAKING, AND THE STORY ARC SO IT CAN 
+    //PICK SPECIFICALLY. YOU ALSO NEED TO STORE THE CHRACTERS AMOUNT OF SENTENCES BEFORE BEING INTERRUTPED. dialogue  start may need a new value to be passed which can be null, its only pass in
+    // passed afer the MC has said something back so that the current interaction can continue where it left off.
+    // things to think about -> player and character back and forth.
+ 
 
 
 
