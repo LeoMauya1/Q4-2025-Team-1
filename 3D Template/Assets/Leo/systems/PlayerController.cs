@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 100f;
     private Vector3 moveDirection;
     public CharacterController characterController;
-    private bool isLooking;
+    private bool wasLooking;
 
     [Header("static Containers")]
     public GameObject P_followUpInteraction;
@@ -76,19 +76,19 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log(StaticVariables.currentInteraction);
 
-        //var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); Idk why this breaks the letter by letter
-        if (Physics.Raycast(transform.position,transform.TransformDirection(Vector3.forward), out RaycastHit hitInfo, 3f) || StaticVariables.promptInterogation)
+        var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); 
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 3f) || StaticVariables.promptInterogation)
         {
-           
+
+          
 
 
-           
             if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider != null && hitInfo.collider.gameObject.tag == "QuestionableEvidence")
             {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 3f, Color.red);
+                
                 Debug.Log(hitInfo);
                 StaticVariables.currentInteraction = hitInfo.collider.gameObject;
-                isLooking = true;
+                wasLooking = true;
             }
 
             Debug.Log("Item investigation commencing");
@@ -98,11 +98,14 @@ public class PlayerController : MonoBehaviour
         else
         {
      
-            
-            StaticVariables.currentInteraction = null;
-            
+            if(wasLooking == true)
+            {
+                StaticVariables.currentInteraction = null;
+            }
 
-            isLooking = false;
+
+
+         
             Debug.Log("not hit");
         }
 
@@ -153,6 +156,7 @@ public class PlayerController : MonoBehaviour
         {
             if(StaticVariables.currentInteraction.GetComponent<Interactions>() != null)
             {
+                wasLooking = false;
                 StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueInteraction();
             }
 

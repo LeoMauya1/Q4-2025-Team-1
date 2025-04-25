@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEditor.Overlays;
+using UnityEngine.UI;
+using TMPro;
 
 public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
 {
@@ -15,27 +17,59 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
     private int passedID;
     private Vector2 previosPos;
     public GameObject hoveredOverCharacter;
+    private GameObject itemPage;
+    private PlayerTabUI pageAtributes;
+    private bool rightMouseButtonDown;
     private void Awake()
     {
         m_rectTransform = GetComponent<RectTransform>();
         mainCamera = Camera.main;
+        Button button = GetComponent<Button>();
+        button.onClick.AddListener(openPage);
+        
+        
+    }
+    void Update()
+    {
+        // Hold state of right mouse button
+        rightMouseButtonDown = Input.GetMouseButton(1);
     }
     public void OnBeginDrag (PointerEventData evedata)
     {
 
         previosPos = m_rectTransform.anchoredPosition;
-
+        
 
     }
     public void OnEndDrag(PointerEventData evedata)
     {
-        
 
-        
+        if (canInteract)
+        {
+            Debug.Log("commence investigation!");
+            FindAnyObjectByType<PlayerTabUI>().tabOutInteraction();
+            passedID = gameObject.GetComponent<EvidencePlaceholder>().evidence.IDnumber;
+
+            StaticVariables.currentInteraction.GetComponent<Interactions>().ItemInteraction(passedID);
+        }
+        else
+        {
+            Debug.Log(previosPos);
+            m_rectTransform.anchoredPosition = previosPos;
+        }
+
     }
     public void OnDrag(PointerEventData eventdata)
     {
-        m_rectTransform.anchoredPosition += eventdata.delta;
+        if (rightMouseButtonDown)
+        {
+    
+            m_rectTransform.anchoredPosition += eventdata.delta;
+        }
+
+
+
+      
 
         Ray canvasRay = mainCamera.ScreenPointToRay(eventdata.position);
         if(Physics.Raycast(canvasRay, out RaycastHit hitInfo ))
@@ -71,24 +105,31 @@ public class DragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-      
+       
+        
+            currentItem = GetComponent<EvidencePlaceholder>().evidence;
+    
+        
+
+        
 
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if(canInteract)
-        {
-            Debug.Log("commence investigation!");
-            FindAnyObjectByType<PlayerTabUI>().tabOutInteraction();
-            passedID = gameObject.GetComponent<EvidencePlaceholder>().evidence.IDnumber;
-          
-            StaticVariables.currentInteraction.GetComponent<Interactions>().ItemInteraction(passedID);
-        }
-         else
-        {
-            Debug.Log(previosPos);
-            m_rectTransform.anchoredPosition = previosPos;
-        }
+        Debug.Log("ananana");
+    }
+    
+    public void openPage()
+    {
+
+        itemPage = FindAnyObjectByType<PlayerTabUI>().itemPage;
+        itemPage.SetActive(!itemPage.activeSelf);
+        pageAtributes = FindAnyObjectByType<PlayerTabUI>();
+        pageAtributes.itemPageImage.sprite = currentItem.itemImage;
+        pageAtributes.itemName.text = currentItem.ItemName;
+        pageAtributes.itemDisc.text = currentItem.ItemDisc;
+
+
     }
 }

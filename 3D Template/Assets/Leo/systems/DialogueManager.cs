@@ -228,7 +228,8 @@ public class DialogueManager : MonoBehaviour
         dialoguePiece.Clear();
         //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
         initialConversationStarted = true;
-        Camtransition(targetCamera);
+        var parent = StaticVariables.currentInteraction.transform;
+        Camtransition(targetCamera, parent);
         foreach (string dialogues in dialogue.characterDialogue)
         {
 
@@ -255,15 +256,13 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("InteractionEnded", true);
             // textBoxAnimation.SetBool("conversationEnded", true);
             yield return new WaitForSeconds(0.3f);
-            Debug.Log("why");
+         
             StaticVariables.itemInteraction = false;
-            var playcam = StaticVariables.dragAndDropInteraction.GetComponent<Interactions>().interactionCamera;
             Debug.Log(StaticVariables.dragAndDropInteraction);
             StaticVariables.isConversing = false;
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
+            StaticVariables.currentInteraction = null;
             mainCamera.transform.position = oGposition;
-            //Camtransition(playcam);
-            StaticVariables.dragAndDropInteraction = null;
             yield break;
 
 
@@ -273,7 +272,7 @@ public class DialogueManager : MonoBehaviour
         if (StaticVariables.isConversing && StaticVariables.currentInteraction.GetComponent<Interactions>().hasFollowUp == false)
         {
             StaticVariables.promptInterogation = false;
-            Debug.Log("one more!");
+
             StaticVariables.initialInteraction = false;
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.SetBool("InteractionEnded", true);
@@ -284,7 +283,7 @@ public class DialogueManager : MonoBehaviour
             //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-      
+            StaticVariables.currentInteraction = null;
             mainCamera.transform.position = oGposition;
             initialConversationStarted = false;
             StaticVariables.isConversing = false;
@@ -306,79 +305,30 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.currentInteraction.GetComponent<Interactions>().textBox.gameObject.SetActive(false);
             initialConversationStarted = false;
             StaticVariables.itemInteraction = false;
-            //Camtransition
+          
      
         }
 
     }
 
 
-    private void Camtransition(Transform playerCam)
+    private void Camtransition(Transform playerCam, Transform parent)
     {
         Debug.Log("Camtransition called with itemInteraction = " + StaticVariables.itemInteraction);
-        if (StaticVariables.itemInteraction == false)
-        {
-            mainCharacter.GetComponent<MeshRenderer>().enabled = false;
+        mainCharacter.GetComponent<MeshRenderer>().enabled = false;
 
-            startPosition = mainCamera.transform.position;
-            startRotation = mainCamera.transform.rotation;
-            targetPosition = playerCam.position;
+        startPosition = mainCamera.transform.position;
+        startRotation = mainCamera.transform.rotation;
 
-            Vector3 invertedDirection = -playerCam.transform.forward;
-            Debug.Log(invertedDirection);
+        targetPosition = playerCam.position;
+        targetRotation = Quaternion.LookRotation(-parent.forward, Vector3.up); // Always rotate toward the current speaker
 
-            targetRotation = Quaternion.LookRotation(invertedDirection);
-            transitionTimer = 0f;
-            isTransitioning = true;
-            return;
-        }
-        if (initialConversationStarted)
-        {
-     
-            mainCharacter.GetComponent<MeshRenderer>().enabled = false;
-
-            startPosition = mainCamera.transform.position;
-            startRotation = mainCamera.transform.rotation;
-            targetPosition = playerCam.position;
-
-            Vector3 invertedDirection = -playerCam.transform.forward;
-            Debug.Log(invertedDirection); 
-
-            targetRotation = Quaternion.LookRotation(invertedDirection);
-            transitionTimer = 0f;
-            isTransitioning = true;
-            return;
-        }
-
-
-
-        if (followUpConversattionStarted)
-        {
-            //lerping mechanics here. 
-
-             mainCharacter.GetComponent<MeshRenderer>().enabled = false;
-
-             startPosition = mainCamera.transform.position;
-             startRotation = mainCamera.transform.rotation;
-             targetPosition = playerCam.position;
-             targetRotation = Quaternion.Euler(camOffset) * startRotation; 
-             transitionTimer = 0f;
-             isTransitioning = true;
+        transitionTimer = 0f;
+        isTransitioning = true;
 
 
 
 
-
-
-        }
- 
-        
-             
-            
-          
-            
-
-        
 
 
 
@@ -418,7 +368,8 @@ public class DialogueManager : MonoBehaviour
         //yield return new WaitUntil(() => StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
         transitionComplete = true;
         followUpConversattionStarted = true;
-        Camtransition(characterCamera);
+        var parent = StaticVariables.runnerUpInteraction.transform;
+        Camtransition(characterCamera, parent);
         foreach (string dialogues in dialogue.characterDialogue)
         {
 
@@ -437,8 +388,30 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator FollowUpDialogueEnd(Transform characterCam)
     {
+        if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown == false && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction == null)
+        {
+            StaticVariables.nextInteraction = false;
+            StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.SetActive(false);
+            yield return new WaitForSeconds(0.3f);
+            //yield return new WaitUntil(() => StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
+            StaticVariables.runnerUpInteraction.GetComponent<FollowUpInteraction>().textBox.gameObject.SetActive(false);
 
-        if (StaticVariables.isConversing)
+
+
+            StaticVariables.isConversing = false;
+
+            followUpConversattionStarted = false;
+            Debug.Log(StaticVariables.isConversing);
+            Debug.Log(StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp);
+            StaticVariables.runnerUpInteraction = null;
+            StaticVariables.currentInteraction = null;
+            mainCamera.transform.position = oGposition;
+            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
+            yield break;
+
+        }
+
+        if (StaticVariables.isConversing && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown == true)
         {
 
             StaticVariables.nextInteraction = false;
@@ -454,20 +427,11 @@ public class DialogueManager : MonoBehaviour
             followUpConversattionStarted = false;
             Debug.Log(StaticVariables.isConversing);
             Debug.Log(StaticVariables.runnerUpInteraction.GetComponent<Interactions>().hasFollowUp);
-            
 
 
-        
-               Camtransition(characterCam);
-        }
-        if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown == false && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction == null)
-        {
 
-
-            mainCamera.transform.position = oGposition;
-            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-            yield return null;
-
+            var parent = StaticVariables.runnerUpInteraction.transform;
+               Camtransition(characterCam, parent);
         }
 
 
@@ -486,7 +450,7 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePiece.Count == 0)
         {
             //CHECKS IF SOMEONE ELSE HAS SOMETHING TO SAY.
-            if (StaticVariables.currentInteraction.GetComponent<Interactions>().doubleDown && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction != null   )
+            if (StaticVariables.runnerUpInteraction.GetComponent<Interactions>().doubleDown && StaticVariables.runnerUpInteraction.GetComponent<Interactions>().FollowUpInteraction != null   )
 
             {
 
@@ -572,7 +536,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator Conversationextendor(Dialogue runnerUpInteractionDialogue, Transform characterCam)
     {
-        Debug.Log("skisbsisb");
+     
        StartCoroutine(FollowUpDialogueEnd(characterCam));
             yield return new WaitForSeconds(0.3f);
             StartCoroutine(FollowUpDialogue(runnerUpInteractionDialogue, characterCam));

@@ -1,11 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerTabUI : MonoBehaviour
 {
     public InputAction tab;
     private ActionMaps actionMaps;
     public GameObject playerTab;
+    public GameObject reticle;
+    public GameObject gameobejcttt;
+    public GameObject itemPage;
+    public Image itemPageImage;
+    public TextMeshProUGUI itemName;
+    public TextMeshProUGUI itemDisc;
 
 
     private void Awake()
@@ -32,7 +40,11 @@ public class PlayerTabUI : MonoBehaviour
         StaticVariables.currentInteraction = null;
         StaticVariables.runnerUpInteraction = null;
         bool isActive = !playerTab.activeSelf;
+     
         playerTab.SetActive(!playerTab.activeSelf);
+        reticle.SetActive(!playerTab.activeSelf);
+       
+      
         Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;
         StaticVariables.gamePaused = isActive ? StaticVariables.gamePaused = true : StaticVariables.gamePaused = false;
 
