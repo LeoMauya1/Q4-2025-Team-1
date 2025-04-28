@@ -20,10 +20,17 @@ public class MC_interactions : MonoBehaviour
     public List<Dialogue> dialogueOptions;
 
 
-    public void dialogueInteraction()
+    public void dialogueInteraction(string characterName)
     {
-        FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[StaticVariables.storyArc]);
+        foreach(var dialogueOption in dialogueOptions)
+        {
+            if(characterName == dialogueOption.charactername)
+            {
+                FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[StaticVariables.eventValue]);
 
+            }
+        }
+       
 
 
     }

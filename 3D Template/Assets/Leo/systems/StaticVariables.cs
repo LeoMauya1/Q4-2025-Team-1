@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class StaticVariables
 {
-    public static int storyArc;
+    public static int eventValue;
     public static GameObject currentInteraction;
     public static GameObject runnerUpInteraction;
     public static bool selectedSexisMale;

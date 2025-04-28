@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using Unity.Collections;
 using UnityEngine.Events;
 
+
 public class PlayerController : MonoBehaviour
 {
 
@@ -24,14 +25,18 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection;
     public CharacterController characterController;
     private bool wasLooking;
-
+    private bool islooking;
     [Header("static Containers")]
     public GameObject P_followUpInteraction;
     public GameObject p_currentInteraction;
-  
+    private GameObject yeaaass;
     public List<PhysicalEvidence> evidenceList = new List<PhysicalEvidence>();
-
-
+    private GameObject previousMaterial;
+    private RaycastHit hitItem;
+    public int eventValue;
+    public UnityEvent highLightItemMaterial;
+    public UnityEvent returnItemMatieral;
+    GameObject previouslyHighlightedItem = null;
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -72,50 +77,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     
     {
+        StaticVariables.eventValue = eventValue;
 
-        Debug.Log(StaticVariables.currentInteraction);
-
-        var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0)); 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 3f) || StaticVariables.promptInterogation)
-        {
-
-          
-
-
-            if (hitInfo.collider != null && hitInfo.collider.gameObject.tag == "interactable" || hitInfo.collider != null && hitInfo.collider.gameObject.tag == "QuestionableEvidence")
-            {
-                
-                Debug.Log(hitInfo);
-                StaticVariables.currentInteraction = hitInfo.collider.gameObject;
-                wasLooking = true;
-            }
-            if(hitInfo.collider.gameObject.tag == "QuestionableEvidence")
-            {
-                hitInfo.collider.gameObject.GetComponent<MeshRenderer>();
-            }
-
-            Debug.Log("Item investigation commencing");
-
-
-        }
-        else
-        {
-     
-        
-
-         
-            Debug.Log("not hit");
-        }
-
-
-
-        //used to visually show the user whats being contained statically.
-        StaticVariables.hasQuestionableEvidence = toggle;
-        p_currentInteraction = StaticVariables.currentInteraction;
-        evidenceList = StaticVariables.questionablEvidence;
-        P_followUpInteraction = StaticVariables.runnerUpInteraction;
- 
-   
 
         if (movement.IsPressed() && StaticVariables.isConversing == false)
         {
@@ -124,10 +87,46 @@ public class PlayerController : MonoBehaviour
             characterController.Move(moveDirection * speed * Time.deltaTime);
 
 
-        
+
 
 
         }
+
+
+
+
+
+        Debug.Log(StaticVariables.currentInteraction);
+
+        var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+
+
+        if (Physics.Raycast(ray, out RaycastHit hitItem, 3f) || StaticVariables.promptInterogation)
+        {
+            GameObject hitItemInfo = hitItem.collider?.gameObject;
+
+            if (hitItem.collider != null &&
+                (hitItem.collider.CompareTag("interactable") || hitItem.collider.CompareTag("QuestionableEvidence")))
+            {
+                StaticVariables.currentInteraction = hitItemInfo;
+                wasLooking = true;
+                return;
+
+            }
+            
+      
+        }
+
+
+        //used to visually show the user whats being contained statically.
+      
+        p_currentInteraction = StaticVariables.currentInteraction;
+        evidenceList = StaticVariables.questionablEvidence;
+        P_followUpInteraction = StaticVariables.runnerUpInteraction;
+      
+   
+
+        
 
         //Debug.Log(StaticVariables.hasQuestionableEvidence);
       //  Debug.Log(StaticVariables.canInteract);
@@ -154,8 +153,10 @@ public class PlayerController : MonoBehaviour
         {
             if(StaticVariables.currentInteraction.GetComponent<Interactions>() != null)
             {
+                var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
                 wasLooking = false;
-                StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueInteraction();
+
+                currentInteraction.dialogueInteraction();
             }
 
 
@@ -197,9 +198,28 @@ public class PlayerController : MonoBehaviour
 
 
 
-   
+   private void ReturnItemMaterial (GameObject hitItem)
+    {
+        hitItem.GetComponent<EvidencePlaceholder>().ReturnItemMaterial();
+    }
+    private void HighlightItem(GameObject hitItem)
+    {
+        hitItem.GetComponent<EvidencePlaceholder>().HighLightItemMaterial();
+    }
 
 
+    private T GetcCurrentInteractionComponent<T>() where T : MonoBehaviour
+    {
+        var c_components = StaticVariables.currentInteraction.GetComponents<T>();
 
+        foreach (var interaction in c_components)
+        {
+            if (interaction.enabled)
+            {
+                return interaction;
+            }
+        }
+        return null;
+    }
 
 }

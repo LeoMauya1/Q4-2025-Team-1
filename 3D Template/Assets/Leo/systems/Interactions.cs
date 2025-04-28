@@ -20,12 +20,11 @@ public class Interactions : MonoBehaviour
 
 
     public Dialogue dialogue;
-    public List<Dialogue> dialogueOptions;
     
   
     public void dialogueInteraction()
     {
-        FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[StaticVariables.storyArc]);
+        FindObjectOfType<DialogueManager>().BeginConversation(dialogue);
 
       
        
