@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -38,20 +39,20 @@ public class DialogueManager : MonoBehaviour
     private float smoothTime = 0.3f;
     private Quaternion targetRotation;
     public string sentences;
-    public bool playerFollowBackandForth;
+
     private GameObject runnerUpinteractions;
+    public bool playerFollowBackandForth;
 
 
+    private Interactions mc_interactionR;
 
 
-
- 
     //BWOOOOOOAHHH BRAIN BLAST, OKAY SO FOR BACK AND FORTH DIALOGUE. HAVE IT CHECK IF THE PLAYER WILL ADD FEEDBACK IN THE DIALOGUE END
     // AND THEN IF ITS TRUE USE THE REFERENCE TO THE PLAYER TO START INTERACTION RESPONSE, IN SOME WAY PASS IN THE CHARACTER THAT'S SPEAKING, AND THE STORY ARC SO IT CAN 
     //PICK SPECIFICALLY. YOU ALSO NEED TO STORE THE CHRACTERS AMOUNT OF SENTENCES BEFORE BEING INTERRUTPED. dialogue  start may need a new value to be passed which can be null, its only pass in
     // passed afer the MC has said something back so that the current interaction can continue where it left off.
     // things to think about -> player and character back and forth.
- 
+
 
 
 
@@ -84,12 +85,17 @@ public class DialogueManager : MonoBehaviour
     public void BeginConversation(Dialogue dialogue)
     {
 
-        var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
+        //var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
         var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
+        if(interactionCamera.playerFollowBackandForth)
+        {
+            StartCoroutine(DialogueStart(dialogue,null));
+        }
         runnerUpinteractions = interactionCamera.FollowUpInteraction;
 
         Debug.Log(runnerUpinteractions);
         StartCoroutine(DialogueStart(dialogue, interactionCamera.interactionCamera));
+
 
 
     }
@@ -117,6 +123,7 @@ public class DialogueManager : MonoBehaviour
     }
     private void Update()
     {
+        //mc_interactionR = GetcCurrentInteractionComponent<Interactions>();
         if (isTransitioning)
         {
             mainCamera.transform.position = Vector3.SmoothDamp(mainCamera.transform.position, targetPosition, ref velocity, smoothTime);
@@ -130,7 +137,10 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-      
+
+       
+
+
     }
 
     public void nextSentence()
@@ -217,6 +227,42 @@ public class DialogueManager : MonoBehaviour
     {
         var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
 
+        if(currentInteraction.playerFollowBackandForth)
+        {
+            StaticVariables.initialInteraction = true;
+            StaticVariables.isConversing = true;
+            currentInteraction.GetComponent<Interactions>().textBox.SetActive(true);
+            currentInteraction.GetComponent<Interactions>().subjectName.text = dialogue.charactername;
+            dialoguePiece.Clear();
+            initialConversationStarted = true;
+            var mcParent = currentInteraction.transform;
+            Camtransition(targetCamera, mcParent);
+            foreach (string dialogues in dialogue.characterDialogue)
+            {
+
+
+                dialoguePiece.Enqueue(dialogues);
+            }
+
+
+
+            nextSentence();
+            yield break;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         oGposition = Camera.main.transform.position;
         StaticVariables.initialInteraction = true;
@@ -270,7 +316,10 @@ public class DialogueManager : MonoBehaviour
 
 
         }
-        if(playerFollowBackandForth)
+
+
+       
+        if(currentInteraction.playerFollowBackandForth)
         {
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
@@ -280,7 +329,8 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.isConversing = false;
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
             StaticVariables.currentInteraction = null;
-            //mainCharacter.GetComponent<MC_interactions>().dialogueInteraction();
+            
+            mainCharacter.GetComponent<MC_interactions>().dialogueInteraction(currentInteraction.dialogue.charactername);
 
             
             yield break;

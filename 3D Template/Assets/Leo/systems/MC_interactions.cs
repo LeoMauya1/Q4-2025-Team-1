@@ -22,15 +22,25 @@ public class MC_interactions : MonoBehaviour
 
     public void dialogueInteraction(string characterName)
     {
+
+
         foreach(var dialogueOption in dialogueOptions)
         {
-            if(characterName == dialogueOption.charactername)
+            if(characterName == dialogueOption.mc_CharacterResponse)
             {
-                FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[StaticVariables.eventValue]);
+            
 
+
+               for (int i = 0; i < dialogueOptions.Count; i++)
+               {
+                if( i == StaticVariables.eventValue)
+                {
+
+                        FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[i]);
+                }
+               }
             }
         }
-       
 
 
     }
