@@ -89,6 +89,7 @@ public class DialogueManager : MonoBehaviour
         var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
         if(interactionCamera.playerFollowBackandForth)
         {
+            StaticVariables.currentInteraction = interactionCamera.gameObject;
             StartCoroutine(DialogueStart(dialogue,null));
         }
         runnerUpinteractions = interactionCamera.FollowUpInteraction;
