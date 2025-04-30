@@ -7,5 +7,9 @@ public class Dialogue
     public string[] characterDialogue;
     public string mc_CharacterResponse;
     public bool playerResponse;
+    public int queueCount;
+
+
+
 
 }

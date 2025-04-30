@@ -24,13 +24,13 @@ public class DialogueManager : MonoBehaviour
     private bool initialConversationStarted;
     private bool followUpConversattionStarted;
 
-
+    private Dialogue storedDialogue;
 
 
     private bool isTransitioning = false;
     private float transitionDuration = 0.3f;
     private float transitionTimer = 1f;
-
+    private Queue<string> previosDialoguePiece;
     private Vector3 startPosition;
     private Quaternion startRotation;
     private Vector3 targetPosition;
@@ -39,7 +39,7 @@ public class DialogueManager : MonoBehaviour
     private float smoothTime = 0.3f;
     private Quaternion targetRotation;
     public string sentences;
-
+    private int dialogueInt;
     private GameObject runnerUpinteractions;
 
     private Coroutine currentTypingCoroutine;
@@ -63,8 +63,8 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         dialoguePiece = new Queue<string>();
-        
-
+        previosDialoguePiece = new Queue<string>();
+        storedDialogue = new Dialogue();
         //Debug.Log(mainCharacterCam.transform.position);
         //Debug.Log(Camera.main.transform.position);
      
@@ -82,12 +82,12 @@ public class DialogueManager : MonoBehaviour
     {
 
         //var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
-        Debug.Log(StaticVariables.currentInteraction);
         var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
+        Debug.Log(StaticVariables.currentInteraction);
       
         runnerUpinteractions = interactionCamera.FollowUpInteraction;
 
-        Debug.Log(runnerUpinteractions);
+       
         StartCoroutine(DialogueStart(dialogue, interactionCamera.interactionCamera));
 
 
@@ -140,9 +140,37 @@ public class DialogueManager : MonoBehaviour
     public void nextSentence()
     {
         var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
+        Debug.Log(dialoguePiece.Count);
+        if (dialoguePiece.Count == currentInteraction.dialogue.queueCount && currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue == false)
+        {
+            Debug.Log("allow me to intervene");
+            dialogueInt = dialoguePiece.Count;
+            storedDialogue.characterDialogue = previosDialoguePiece.ToArray();
+       
+            StaticVariables.promptInterogation = false;
+            StaticVariables.promptInterogation = false;
+            StaticVariables.initialInteraction = false;
+            currentInteraction.textBox.gameObject.SetActive(false);
+            StaticVariables.itemInteraction = false;
+            StaticVariables.isConversing = false;
+            mainCharacter.GetComponent<MeshRenderer>().enabled = false;
+
+            Debug.Log(dialoguePiece.Count);
+            mainCharacter.GetComponent<MC_interactions>().dialogueInteraction(currentInteraction.dialogue.charactername);
 
 
-        if (dialoguePiece.Count == 0)
+
+            return;
+        }
+
+
+
+
+
+
+
+
+        if (dialoguePiece.Count == 0 && previosDialoguePiece.Count == 0)
 
         {
             Debug.Log("CHECK");
@@ -180,6 +208,8 @@ public class DialogueManager : MonoBehaviour
             
             sentenceTracker = dialoguePiece.Count;
             string dialogue = dialoguePiece.Dequeue();
+            previosDialoguePiece = dialoguePiece;
+            //Debug.Log(previosDialoguePiece.);
             StopCoroutine(LetterByLetter(dialogue));
             StartCoroutine(LetterByLetter(dialogue));
         }
@@ -270,6 +300,8 @@ public class DialogueManager : MonoBehaviour
 
 
                 dialoguePiece.Enqueue(dialogues);
+           
+                
             }
 
 
@@ -335,6 +367,18 @@ public class DialogueManager : MonoBehaviour
         }
         if(mainCharacter.GetComponent<MC_interactions>().mcDialogue == true)
         {
+            if(dialogueInt > 0)
+            {
+                BeginConversation(storedDialogue);
+                yield break;
+            }
+
+
+
+
+
+
+
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
@@ -350,24 +394,7 @@ public class DialogueManager : MonoBehaviour
 
 
 
-        if (currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue == false)
-        {
-          
-            StaticVariables.promptInterogation = false;
-            StaticVariables.promptInterogation = false;
-            StaticVariables.initialInteraction = false;
-            currentInteraction.textBox.gameObject.SetActive(false);
-            StaticVariables.itemInteraction = false;
-            StaticVariables.isConversing = false;
-            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-
-            Debug.Log(dialoguePiece.Count);
-            mainCharacter.GetComponent<MC_interactions>().dialogueInteraction(currentInteraction.dialogue.charactername);
-
-
-            
-            yield break;
-        }
+       
 
 
         if (StaticVariables.isConversing && StaticVariables.currentInteraction.GetComponent<Interactions>().hasFollowUp == false)
