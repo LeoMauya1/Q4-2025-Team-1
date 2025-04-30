@@ -18,6 +18,7 @@ public class MC_interactions : MonoBehaviour
 
     public Dialogue dialogue;
     public List<Dialogue> dialogueOptions;
+    public bool mcDialogue;
 
 
     public void dialogueInteraction(string characterName)
@@ -35,11 +36,13 @@ public class MC_interactions : MonoBehaviour
                {
                 if( i == StaticVariables.eventValue)
                 {
-
+                        mcDialogue = true;
                         FindObjectOfType<DialogueManager>().BeginConversation(dialogueOptions[i]);
+                        return;
                 }
                }
             }
+            return;
         }
 
 

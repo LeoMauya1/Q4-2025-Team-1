@@ -41,17 +41,13 @@ public class DialogueManager : MonoBehaviour
     public string sentences;
 
     private GameObject runnerUpinteractions;
-    public bool playerFollowBackandForth;
 
+    private Coroutine currentTypingCoroutine;
 
     private Interactions mc_interactionR;
 
 
-    //BWOOOOOOAHHH BRAIN BLAST, OKAY SO FOR BACK AND FORTH DIALOGUE. HAVE IT CHECK IF THE PLAYER WILL ADD FEEDBACK IN THE DIALOGUE END
-    // AND THEN IF ITS TRUE USE THE REFERENCE TO THE PLAYER TO START INTERACTION RESPONSE, IN SOME WAY PASS IN THE CHARACTER THAT'S SPEAKING, AND THE STORY ARC SO IT CAN 
-    //PICK SPECIFICALLY. YOU ALSO NEED TO STORE THE CHRACTERS AMOUNT OF SENTENCES BEFORE BEING INTERRUTPED. dialogue  start may need a new value to be passed which can be null, its only pass in
-    // passed afer the MC has said something back so that the current interaction can continue where it left off.
-    // things to think about -> player and character back and forth.
+   //Do stuff with the next sentence function...... its the key.
 
 
 
@@ -86,12 +82,9 @@ public class DialogueManager : MonoBehaviour
     {
 
         //var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
+        Debug.Log(StaticVariables.currentInteraction);
         var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
-        if(interactionCamera.playerFollowBackandForth)
-        {
-            StaticVariables.currentInteraction = interactionCamera.gameObject;
-            StartCoroutine(DialogueStart(dialogue,null));
-        }
+      
         runnerUpinteractions = interactionCamera.FollowUpInteraction;
 
         Debug.Log(runnerUpinteractions);
@@ -152,6 +145,7 @@ public class DialogueManager : MonoBehaviour
         if (dialoguePiece.Count == 0)
 
         {
+            Debug.Log("CHECK");
             //CHECKS IF SOMEONE ELSE HAS SOMETHING TO SAY.
             if (currentInteraction.hasFollowUp && StaticVariables.itemInteraction == false)
 
@@ -181,10 +175,13 @@ public class DialogueManager : MonoBehaviour
        
         }else
         {
-             sentenceTracker = dialoguePiece.Count;
-        string dialogue = dialoguePiece.Dequeue();
-        StopCoroutine(LetterByLetter(dialogue));
-        StartCoroutine(LetterByLetter(dialogue));
+
+          
+            
+            sentenceTracker = dialoguePiece.Count;
+            string dialogue = dialoguePiece.Dequeue();
+            StopCoroutine(LetterByLetter(dialogue));
+            StartCoroutine(LetterByLetter(dialogue));
         }
         
        
@@ -196,25 +193,52 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator LetterByLetter(string sentence)
     {
-        var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
-        currentInteraction.subjectText.text = "";
-        StaticVariables.currentInteraction.GetComponent<Interactions>().subjectText.text = "";
+       
         
-        foreach (char letter in sentence.ToCharArray())
+        var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
+        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue)
         {
-            if (letter == '.')
+
+            mainCharacter.GetComponent<MC_interactions>().subjectText.text = "";
+
+            foreach (char letter in sentence.ToCharArray())
             {
+                if (letter == '.')
+                {
+
+                    mainCharacter.GetComponent<MC_interactions>().subjectText.text += letter;
+                    StaticVariables.sentenceCompletion = false;
+                    yield return new WaitForSeconds(0.1f);
+                }
+
+                mainCharacter.GetComponent<MC_interactions>().subjectText.text += letter;
+                StaticVariables.sentenceCompletion = false;
+                yield return new WaitForSeconds(0.03f);
+            }
+            StaticVariables.sentenceCompletion = true;
+        }
+        else
+        {
+            currentInteraction.subjectText.text = "";
+
+            foreach (char letter in sentence.ToCharArray())
+            {
+                if (letter == '.')
+                {
+
+                    currentInteraction.subjectText.text += letter;
+                    StaticVariables.sentenceCompletion = false;
+                    yield return new WaitForSeconds(0.1f);
+                }
 
                 currentInteraction.subjectText.text += letter;
                 StaticVariables.sentenceCompletion = false;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.03f);
             }
-
-            currentInteraction.subjectText.text += letter;
-            StaticVariables.sentenceCompletion = false;
-            yield return  new WaitForSeconds(0.03f);
+            StaticVariables.sentenceCompletion = true;
         }
-        StaticVariables.sentenceCompletion = true;
+        
+       
 
     }
 
@@ -227,17 +251,20 @@ public class DialogueManager : MonoBehaviour
     IEnumerator DialogueStart(Dialogue dialogue, Transform targetCamera)
     {
         var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
-
-        if(currentInteraction.playerFollowBackandForth)
+        
+        
+        
+        
+        
+        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue && mainCharacter.GetComponent<MC_interactions>().mcDialogue)
         {
+            currentInteraction.textBox.SetActive(false);
             StaticVariables.initialInteraction = true;
             StaticVariables.isConversing = true;
-            currentInteraction.GetComponent<Interactions>().textBox.SetActive(true);
-            currentInteraction.GetComponent<Interactions>().subjectName.text = dialogue.charactername;
+            mainCharacter.GetComponent<MC_interactions>().textBox.SetActive(true);
+            mainCharacter.GetComponent<MC_interactions>().subjectName.text = dialogue.charactername;
             dialoguePiece.Clear();
             initialConversationStarted = true;
-            var mcParent = currentInteraction.transform;
-            Camtransition(targetCamera, mcParent);
             foreach (string dialogues in dialogue.characterDialogue)
             {
 
@@ -250,17 +277,6 @@ public class DialogueManager : MonoBehaviour
             nextSentence();
             yield break;
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -317,11 +333,26 @@ public class DialogueManager : MonoBehaviour
 
 
         }
-
-
-       
-        if(currentInteraction.playerFollowBackandForth)
+        if(mainCharacter.GetComponent<MC_interactions>().mcDialogue == true)
         {
+            StaticVariables.promptInterogation = false;
+            StaticVariables.promptInterogation = false;
+            StaticVariables.initialInteraction = false;
+            yield return new WaitForSeconds(0.3f);
+
+            mainCharacter.GetComponent<MC_interactions>().textBox.SetActive(false);
+            mainCharacter.GetComponent<MC_interactions>().mcDialogue = false;
+            StaticVariables.itemInteraction = false;
+            StaticVariables.isConversing = false;
+            mainCharacter.GetComponent<MeshRenderer>().enabled = true;
+            yield break;
+        }
+
+
+
+        if (currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue == false)
+        {
+          
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
@@ -329,9 +360,10 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.itemInteraction = false;
             StaticVariables.isConversing = false;
             mainCharacter.GetComponent<MeshRenderer>().enabled = true;
-            StaticVariables.currentInteraction = null;
-            
+
+            Debug.Log(dialoguePiece.Count);
             mainCharacter.GetComponent<MC_interactions>().dialogueInteraction(currentInteraction.dialogue.charactername);
+
 
             
             yield break;

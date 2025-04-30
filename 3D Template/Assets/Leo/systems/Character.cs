@@ -2,9 +2,10 @@ using UnityEngine;
 [System.Serializable]
 public class Character
 {
-    public BoxCollider interactionArea;
+
     public string name;
- 
+    [TextArea(5, 10)]
+    public string characteBio;
 
 
 
@@ -14,8 +15,5 @@ public class Character
 
 
 
-    public void AnswerQuestion(PhysicalEvidence evidence)
-    {
 
-    }
 }

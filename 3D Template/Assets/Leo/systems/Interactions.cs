@@ -20,7 +20,7 @@ public class Interactions : MonoBehaviour
 
 
     public Dialogue dialogue;
-    public bool playerFollowBackandForth;
+
 
     public void dialogueInteraction()
     {

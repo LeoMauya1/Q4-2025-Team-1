@@ -6,5 +6,6 @@ public class Dialogue
     [TextArea(5, 10)]
     public string[] characterDialogue;
     public string mc_CharacterResponse;
+    public bool playerResponse;
 
 }
