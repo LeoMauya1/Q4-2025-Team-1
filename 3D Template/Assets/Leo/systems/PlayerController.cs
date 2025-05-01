@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        transform.position = SaveDataController.Instance.currentData.position;
     }
     private void Awake()
     {
@@ -77,6 +78,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     
     {
+
+        SaveDataController.Instance.currentData.position = transform.position;
         StaticVariables.eventValue = eventValue;
 
 
