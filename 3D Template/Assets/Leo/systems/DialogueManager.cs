@@ -45,7 +45,10 @@ public class DialogueManager : MonoBehaviour
     private Coroutine currentTypingCoroutine;
 
     private Interactions mc_interactionR;
+    private Dialogue itemDialogue;
 
+    private bool characterConvoRerun;
+    private bool mcIntervention;
 
    //Do stuff with the next sentence function...... its the key.
 
@@ -80,6 +83,12 @@ public class DialogueManager : MonoBehaviour
 
     public void BeginConversation(Dialogue dialogue)
     {
+        if(!characterConvoRerun && !mcIntervention)
+        {
+            storedDialogue.charactername = dialogue.charactername;
+
+        }
+
 
         //var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
         var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
@@ -87,7 +96,7 @@ public class DialogueManager : MonoBehaviour
       
         runnerUpinteractions = interactionCamera.FollowUpInteraction;
 
-       
+        
         StartCoroutine(DialogueStart(dialogue, interactionCamera.interactionCamera));
 
 
@@ -97,14 +106,16 @@ public class DialogueManager : MonoBehaviour
     public void BeginItemInteraction(int id)
     {
            var currentInteraction = GetcCurrentInteractionComponent<Interactions>().itemDialogues;
-        
-        if(id >= 0 && id < currentInteraction.Count)
+           var itemInteraction = GetcCurrentInteractionComponent<Interactions>();
+        if (id >= 0 && id < currentInteraction.Count)
         {
             Debug.Log("yah yha");  
             var interactionCamera = GetcCurrentInteractionComponent<Interactions>().interactionCamera;
             StaticVariables.itemInteraction = true;
             var selectedDialogue = currentInteraction[id];
-            
+
+            itemInteraction.dialogue.playerResponse = false;
+            itemDialogue = itemInteraction.dialogue;
             StartCoroutine(DialogueStart(selectedDialogue, interactionCamera));
 
 
@@ -146,7 +157,7 @@ public class DialogueManager : MonoBehaviour
             Debug.Log("allow me to intervene");
             dialogueInt = dialoguePiece.Count;
             storedDialogue.characterDialogue = previosDialoguePiece.ToArray();
-       
+            Debug.Log(storedDialogue.charactername);
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
@@ -154,7 +165,7 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.itemInteraction = false;
             StaticVariables.isConversing = false;
             mainCharacter.GetComponent<MeshRenderer>().enabled = false;
-
+            mcIntervention = true;
             Debug.Log(dialoguePiece.Count);
             mainCharacter.GetComponent<MC_interactions>().dialogueInteraction(currentInteraction.dialogue.charactername);
 
@@ -226,7 +237,7 @@ public class DialogueManager : MonoBehaviour
        
         
         var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
-        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue)
+        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue && !characterConvoRerun)
         {
 
             mainCharacter.GetComponent<MC_interactions>().subjectText.text = "";
@@ -286,8 +297,9 @@ public class DialogueManager : MonoBehaviour
         
         
         
-        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue && mainCharacter.GetComponent<MC_interactions>().mcDialogue)
+        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue && !characterConvoRerun)
         {
+            Debug.Log("Mc talking");
             currentInteraction.textBox.SetActive(false);
             StaticVariables.initialInteraction = true;
             StaticVariables.isConversing = true;
@@ -311,17 +323,18 @@ public class DialogueManager : MonoBehaviour
         }
 
 
-
+       
 
         oGposition = Camera.main.transform.position;
         StaticVariables.initialInteraction = true;
         StaticVariables.isConversing = true;
-
+        Debug.Log(currentInteraction);
         currentInteraction.dialogueAnimation.SetBool("interactionEnabled", true);
        
         yield return new WaitForSeconds(0.3f);
         currentInteraction.dialogueAnimation.SetBool("interactionEnabled", false);
         currentInteraction.GetComponent<Interactions>().textBox.SetActive(true);
+        dialogueInt = dialoguePiece.Count;
         currentInteraction.GetComponent<Interactions>().subjectName.text = dialogue.charactername;
         dialoguePiece.Clear();
         //yield return new WaitUntil(() => StaticVariables.currentInteraction.GetComponent<Interactions>().dialogueAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1);
@@ -351,6 +364,7 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
+            itemDialogue.playerResponse = true;
             currentInteraction.textBox.gameObject.SetActive(false);
             currentInteraction.dialogueAnimation.SetBool("InteractionEnded", true);
             yield return new WaitForSeconds(0.3f);
@@ -369,7 +383,12 @@ public class DialogueManager : MonoBehaviour
         {
             if(dialogueInt > 0)
             {
+                characterConvoRerun = true;
                 BeginConversation(storedDialogue);
+                mainCharacter.GetComponent<MC_interactions>().textBox.gameObject.SetActive(false);
+                yield return new WaitForSeconds(0.3f);
+                mainCharacter.GetComponent<MC_interactions>().mcDialogue = false;
+                characterConvoRerun = false;
                 yield break;
             }
 
@@ -383,7 +402,7 @@ public class DialogueManager : MonoBehaviour
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
             yield return new WaitForSeconds(0.3f);
-
+            mainCamera.transform.position = oGposition;
             mainCharacter.GetComponent<MC_interactions>().textBox.SetActive(false);
             mainCharacter.GetComponent<MC_interactions>().mcDialogue = false;
             StaticVariables.itemInteraction = false;
