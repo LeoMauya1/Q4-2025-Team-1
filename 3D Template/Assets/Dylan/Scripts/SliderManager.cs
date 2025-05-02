@@ -54,14 +54,19 @@ public class SliderManager : MonoBehaviour
         pieces = new List<Transform>();
         size = 3;
         CreatePuzzlePieces(0.01f);
+        shuffling = true;
     }
 
     void Update()
     {
         if (!shuffling && CheckCompletion())
         {
-            shuffling = true;
-            StartCoroutine(WaitShuffle(0f));
+            Debug.Log("win");
+            shuffling = false;
+        }
+        if (shuffling)
+        {
+            Shuffle();
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -103,6 +108,7 @@ public class SliderManager : MonoBehaviour
                 return false;
             }
         }
+        Debug.Log("win");
         return true;
     }
 
@@ -115,6 +121,7 @@ public class SliderManager : MonoBehaviour
 
     private void Shuffle()
     {
+        shuffling = false;
         int count = 0;
         int last = 0;
         while (count < (size * size * size))
