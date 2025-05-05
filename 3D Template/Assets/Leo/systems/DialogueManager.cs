@@ -83,18 +83,25 @@ public class DialogueManager : MonoBehaviour
 
     public void BeginConversation(Dialogue dialogue)
     {
+        var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
+       
         if(!characterConvoRerun && !mcIntervention)
         {
             storedDialogue.charactername = dialogue.charactername;
 
         }
-
-
+        if(mainCharacter.GetComponent<MC_interactions>().mcDialogue == true)
+        {
+            
+            var MinteractionCamera = mainCharacter.GetComponent<MC_interactions>().interactionCamera;
+            StartCoroutine(DialogueStart(dialogue, MinteractionCamera));
+            return;
+        }
+        runnerUpinteractions = interactionCamera.FollowUpInteraction;
         //var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
-        var interactionCamera = GetcCurrentInteractionComponent<Interactions>();
         Debug.Log(StaticVariables.currentInteraction);
       
-        runnerUpinteractions = interactionCamera.FollowUpInteraction;
+    
 
         
         StartCoroutine(DialogueStart(dialogue, interactionCamera.interactionCamera));
@@ -237,7 +244,7 @@ public class DialogueManager : MonoBehaviour
        
         
         var currentInteraction = GetcCurrentInteractionComponent<Interactions>();
-        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue && !characterConvoRerun)
+        if(currentInteraction.dialogue.playerResponse && mainCharacter.GetComponent<MC_interactions>().mcDialogue)
         {
 
             mainCharacter.GetComponent<MC_interactions>().subjectText.text = "";
@@ -321,9 +328,32 @@ public class DialogueManager : MonoBehaviour
             nextSentence();
             yield break;
         }
+        if ( mainCharacter.GetComponent<MC_interactions>().mcDialogue && !characterConvoRerun)
+        {
+            Debug.Log("Mc talking");
+            currentInteraction.textBox.SetActive(false);
+            StaticVariables.initialInteraction = true;
+            StaticVariables.isConversing = true;
+            mainCharacter.GetComponent<MC_interactions>().textBox.SetActive(true);
+            mainCharacter.GetComponent<MC_interactions>().subjectName.text = dialogue.charactername;
+            dialoguePiece.Clear();
+            initialConversationStarted = true;
+            foreach (string dialogues in dialogue.characterDialogue)
+            {
 
 
-       
+                dialoguePiece.Enqueue(dialogues);
+
+
+            }
+
+
+
+            nextSentence();
+            yield break;
+        }
+
+
 
         oGposition = Camera.main.transform.position;
         StaticVariables.initialInteraction = true;

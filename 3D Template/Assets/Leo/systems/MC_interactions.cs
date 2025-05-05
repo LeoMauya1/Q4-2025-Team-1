@@ -21,6 +21,10 @@ public class MC_interactions : MonoBehaviour
     public bool mcDialogue;
 
 
+
+
+
+
     public void dialogueInteraction(string characterName)
     {
 
@@ -47,6 +51,15 @@ public class MC_interactions : MonoBehaviour
 
 
     }
+    public void Interactions()
+    {
+        mcDialogue = true;
+        FindObjectOfType<DialogueManager>().BeginConversation(dialogue);
+    }
+    
+
+
+
     public void ItemInteraction(int itemID)
     {
         FindAnyObjectByType<DialogueManager>().BeginItemInteraction(itemID);

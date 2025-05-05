@@ -62,6 +62,15 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skip"",
+                    ""type"": ""Button"",
+                    ""id"": ""1bf31b10-ef34-4718-a091-98167b7b7264"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -150,6 +159,17 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""15297f1b-03a7-4f65-a7e7-e43aead652d9"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -256,6 +276,7 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
         m_PlayerActions_Look = m_PlayerActions.FindAction("Look", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Click = m_PlayerActions.FindAction("Click", throwIfNotFound: true);
+        m_PlayerActions_Skip = m_PlayerActions.FindAction("Skip", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_PlayerTab = m_UI.FindAction("Player Tab", throwIfNotFound: true);
@@ -331,6 +352,7 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Look;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Click;
+    private readonly InputAction m_PlayerActions_Skip;
     public struct PlayerActionsActions
     {
         private @ActionMaps m_Wrapper;
@@ -339,6 +361,7 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_PlayerActions_Look;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Click => m_Wrapper.m_PlayerActions_Click;
+        public InputAction @Skip => m_Wrapper.m_PlayerActions_Skip;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -360,6 +383,9 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @Skip.started += instance.OnSkip;
+            @Skip.performed += instance.OnSkip;
+            @Skip.canceled += instance.OnSkip;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -376,6 +402,9 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @Skip.started -= instance.OnSkip;
+            @Skip.performed -= instance.OnSkip;
+            @Skip.canceled -= instance.OnSkip;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -453,6 +482,7 @@ public partial class @ActionMaps: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnClick(InputAction.CallbackContext context);
+        void OnSkip(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

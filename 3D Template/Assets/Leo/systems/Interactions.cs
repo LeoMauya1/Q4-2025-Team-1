@@ -20,6 +20,8 @@ public class Interactions : MonoBehaviour
 
 
     public Dialogue dialogue;
+    public Dialogue[] monologues;
+ 
 
 
     public void dialogueInteraction()
@@ -29,6 +31,28 @@ public class Interactions : MonoBehaviour
       
        
     }
+
+    public void MonologueInteraction()
+    {
+        FindObjectOfType<Monologue>().BeginConversation(monologues[0]);
+       
+    }
+    public void nextStreamOfConscious()
+    {
+        FindObjectOfType<Monologue>().BeginConversation(monologues[1]);
+       
+    }
+
+    public void nextStreamOfConscious2()
+    {
+        FindObjectOfType<Monologue>().BeginConversation(monologues[2]);
+        
+
+    }
+
+
+
+
     public void ItemInteraction(int itemID)
     {
         FindAnyObjectByType<DialogueManager>().BeginItemInteraction(itemID);

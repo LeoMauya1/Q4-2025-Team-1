@@ -19,5 +19,9 @@ public class StaticVariables
     public static bool itemInteraction;
     public static bool promptInterogation;
     public static GameObject dragAndDropInteraction;
+    public static bool dialogueTextprogressing;
+
+
+   
    
 }
