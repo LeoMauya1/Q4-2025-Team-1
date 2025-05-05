@@ -21,21 +21,33 @@ public class Scene2 : MonoBehaviour
     private bool firstIteration;
     private bool secondIteration;
     private bool transitionOut;
+    private bool pause;
 
 
 
     private void Update()
     {
+        if (director.time >= 40.76263f && !pause)
+        {
+            director.Pause();
+            pause = true;
+        }
+
+
+
         if (monologueSystem.nextThought && !firstIteration && !secondIteration && !transitionOut)
         {
+            
             StartCoroutine(nextThought());
         }
         if (monologueSystem.nextThought && firstIteration && !transitionOut)
         {
+            director.Play();
             StartCoroutine(nextThought2());
         }
-       
     }
+       
+    
 
 
 
@@ -59,5 +71,13 @@ public class Scene2 : MonoBehaviour
 
     }
 
+
+
+
+
+    public void WhiteFadeOut()
+    {
+        SceneManager.LoadScene("Main Game");
+    }
 
 }
