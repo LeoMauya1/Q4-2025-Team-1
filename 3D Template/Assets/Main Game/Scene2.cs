@@ -22,15 +22,22 @@ public class Scene2 : MonoBehaviour
     private bool secondIteration;
     private bool transitionOut;
     private bool pause;
+    private bool monologueComplete;
 
 
 
     private void Update()
     {
-        if (director.time >= 40.76263f && !pause)
+   
+        if (director.time >= 40.76263f && !monologueComplete)
         {
             director.Pause();
             pause = true;
+        }
+
+        if(director.state == PlayState.Paused && monologueComplete)
+        {
+            director.Play();
         }
 
 
@@ -68,7 +75,7 @@ public class Scene2 : MonoBehaviour
         yield return new WaitForSeconds(3f);
         player.nextStreamOfConscious2();
         secondIteration = true;
-
+        monologueComplete = true;
     }
 
 
