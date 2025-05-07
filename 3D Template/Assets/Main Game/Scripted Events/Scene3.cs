@@ -93,6 +93,7 @@ public class Scene3 : MonoBehaviour
 
         if (monologueSystem.nextThought && monologueSystem.currentMonologue.queueCount == 3 && playerController.clicked && director.time >= 58)
         {
+            Debug.Log("yes!");
             director.Stop();
             StaticVariables.currentInteraction = lion.gameObject;
             lion.dialogueInteraction();

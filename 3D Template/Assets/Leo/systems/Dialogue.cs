@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 [System.Serializable]
 public class Dialogue
 {
@@ -8,6 +9,7 @@ public class Dialogue
     public string mc_CharacterResponse;
     public bool playerResponse;
     public int queueCount;
+    public Image[] charcterSprite; 
 
 
 

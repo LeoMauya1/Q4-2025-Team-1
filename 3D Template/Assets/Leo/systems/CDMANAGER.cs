@@ -17,12 +17,12 @@ public class CDMANAGER : MonoBehaviour
             if(i == StaticVariables.eventValue)
             {
                 characterDialogueList[i].enabled = true;
-                //characterFollowUpDialogueList[i].enabled = true;
+
             }
             else
             {
                 characterDialogueList[i].enabled = false;
-                //characterFollowUpDialogueList[i].enabled = false;
+              
             }
         }
     }

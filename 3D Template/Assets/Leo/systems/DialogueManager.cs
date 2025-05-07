@@ -100,9 +100,10 @@ public class DialogueManager : MonoBehaviour
         runnerUpinteractions = interactionCamera.FollowUpInteraction;
         //var interactioncamera = StaticVariables.currentInteraction.GetComponent<Interactions>().interactionCamera;
         Debug.Log(StaticVariables.currentInteraction);
-      
-    
 
+
+        Debug.Log(dialogue);
+        Debug.Log(interactionCamera.interactionCamera);
         
         StartCoroutine(DialogueStart(dialogue, interactionCamera.interactionCamera));
 

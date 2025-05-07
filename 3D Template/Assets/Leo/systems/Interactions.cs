@@ -47,15 +47,15 @@ public class Interactions : MonoBehaviour
 
     public void MonologueInteraction()
     {
-        FindAnyObjectByType<DialogueManager>().BeginConversation(monologues[0]);
+        FindAnyObjectByType<Monologue>().BeginConversation(monologues[0]);
     }
     public void nextStreamOfConscious()
     {
-        FindAnyObjectByType<DialogueManager>().BeginConversation(monologues[1]);
+        FindAnyObjectByType<Monologue>().BeginConversation(monologues[1]);
     }
     public void nextStreamOfConscious2()
     {
-        FindAnyObjectByType<DialogueManager>().BeginConversation(monologues[2]);
+        FindAnyObjectByType<Monologue>().BeginConversation(monologues[2]);
     }
     public void ItemInteraction(int itemID)
     {

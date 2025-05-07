@@ -18,6 +18,9 @@ public class Monologue : MonoBehaviour
     public bool secondIteration;
      private int randomInt;
     public bool sentenceSkipped;
+    private int currentIndex;
+    private int previousInt;
+ 
     public bool complete { get; set; }
     public Dialogue currentMonologue { get; set; }
 
@@ -49,12 +52,13 @@ public class Monologue : MonoBehaviour
 
 
 
-
-
+        currentIndex = 0;
+        dialogue.charcterSprite[0].enabled = true;
         Debug.Log(dialogue.charactername);
         StaticVariables.initialInteraction = true;
         StaticVariables.isConversing = true;
         mainCharacter.textBox.SetActive(true);
+       
         mainCharacter.subjectName.text = dialogue.charactername;
         dialoguePiece.Clear();
         foreach (string dialogues in dialogue.characterDialogue)
@@ -100,9 +104,10 @@ public class Monologue : MonoBehaviour
         else
         {
 
-
-
-         
+            previousInt = currentIndex;
+            currentIndex++;
+            currentMonologue.charcterSprite[previousInt].enabled = false;
+            currentMonologue.charcterSprite[currentIndex].enabled = true;
             string dialogue = dialoguePiece.Dequeue();
             StopCoroutine(LetterByLetter(dialogue));
             StartCoroutine(LetterByLetter(dialogue));
@@ -153,7 +158,10 @@ public class Monologue : MonoBehaviour
     {
 
 
-          
+            currentIndex = 0;
+            previousInt = 0;
+            currentMonologue.charcterSprite[previousInt].enabled = false;
+            currentMonologue.charcterSprite[currentIndex].enabled = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
