@@ -32,27 +32,31 @@ public class Interactions : MonoBehaviour
        
     }
 
+  
+
+    public void MonologueHandler(int index)
+    {
+        if(index >= 0 &&  index < monologues.Length)
+        {
+            FindAnyObjectByType<Monologue>().BeginConversation(monologues[index]);
+        }
+
+
+    }
+
+
     public void MonologueInteraction()
     {
-        FindObjectOfType<Monologue>().BeginConversation(monologues[0]);
-       
+        FindAnyObjectByType<DialogueManager>().BeginConversation(monologues[0]);
     }
     public void nextStreamOfConscious()
     {
-        FindObjectOfType<Monologue>().BeginConversation(monologues[1]);
-       
+        FindAnyObjectByType<DialogueManager>().BeginConversation(monologues[1]);
     }
-
     public void nextStreamOfConscious2()
     {
-        FindObjectOfType<Monologue>().BeginConversation(monologues[2]);
-        
-
+        FindAnyObjectByType<DialogueManager>().BeginConversation(monologues[2]);
     }
-
-
-
-
     public void ItemInteraction(int itemID)
     {
         FindAnyObjectByType<DialogueManager>().BeginItemInteraction(itemID);

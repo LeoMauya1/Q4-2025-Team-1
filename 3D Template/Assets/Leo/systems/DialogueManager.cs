@@ -90,7 +90,7 @@ public class DialogueManager : MonoBehaviour
             storedDialogue.charactername = dialogue.charactername;
 
         }
-        if(mainCharacter.GetComponent<MC_interactions>().mcDialogue == true)
+        if(mainCharacter.GetComponent<MC_interactions>() != null && mainCharacter.GetComponent<MC_interactions>().mcDialogue == true)
         {
             
             var MinteractionCamera = mainCharacter.GetComponent<MC_interactions>().interactionCamera;

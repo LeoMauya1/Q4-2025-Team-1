@@ -18,6 +18,8 @@ public class Monologue : MonoBehaviour
     public bool secondIteration;
      private int randomInt;
     public bool sentenceSkipped;
+    public bool complete { get; set; }
+    public Dialogue currentMonologue { get; set; }
 
 
 
@@ -28,7 +30,7 @@ public class Monologue : MonoBehaviour
     public void BeginConversation(Dialogue dialogue)
     {
 
-
+        currentMonologue = dialogue;
         StartCoroutine(DialogueStart(dialogue));
 
 
@@ -149,9 +151,9 @@ public class Monologue : MonoBehaviour
     }
     IEnumerator DialogueEnd()
     {
-      
 
 
+          
             StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;

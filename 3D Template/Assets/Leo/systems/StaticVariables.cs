@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class StaticVariables
 {
+    public static string playerName;
     public static int eventValue;
     public static GameObject currentInteraction;
     public static GameObject runnerUpInteraction;

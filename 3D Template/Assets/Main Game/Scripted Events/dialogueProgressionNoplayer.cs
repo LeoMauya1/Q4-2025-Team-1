@@ -7,6 +7,7 @@ public class dialogueProgressionNoplayer : MonoBehaviour
     private ActionMaps actionMap;
     public InputAction click;
     public InputAction skip;
+    public bool clicked { get; set; }
 
 
     private void Awake()
@@ -73,6 +74,7 @@ public class dialogueProgressionNoplayer : MonoBehaviour
     {
         if (StaticVariables.isConversing && StaticVariables.initialInteraction && StaticVariables.dialogueTextprogressing)
         {
+            clicked = true;
             FindAnyObjectByType<Monologue>().sentenceSkipped = true;
         }
     }
