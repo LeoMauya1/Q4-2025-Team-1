@@ -15,6 +15,8 @@ public class SliderManager : MonoBehaviour
     private int emptyLocation;
     private int size;
     private bool shuffling = false;
+    private bool solved = false;
+    public GameObject TrapDoor;
 
     private void CreatePuzzlePieces(float gapThickness)
     {
@@ -54,6 +56,8 @@ public class SliderManager : MonoBehaviour
         pieces = new List<Transform>();
         size = 3;
         CreatePuzzlePieces(0.01f);
+        gameObject.GetComponent<SliderManager>().enabled = false;
+         
         shuffling = true;
     }
 
@@ -61,12 +65,18 @@ public class SliderManager : MonoBehaviour
     {
         if (!shuffling && CheckCompletion())
         {
-            Debug.Log("win");
             shuffling = false;
+            solved = true;
+        }
+        if (solved == true)
+        {
+            //should get rid of trapdoor hopefully
+            TrapDoor.SetActive(false);
         }
         if (shuffling)
         {
             Shuffle();
+            Debug.Log("playing");
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -108,7 +118,6 @@ public class SliderManager : MonoBehaviour
                 return false;
             }
         }
-        Debug.Log("win");
         return true;
     }
 
