@@ -52,8 +52,7 @@ public class Monologue : MonoBehaviour
 
 
 
-        currentIndex = 0;
-        dialogue.charcterSprite[0].enabled = true;
+        dialogue.charcterSprite[0].gameObject.SetActive(true);
         Debug.Log(dialogue.charactername);
         StaticVariables.initialInteraction = true;
         StaticVariables.isConversing = true;
@@ -81,8 +80,6 @@ public class Monologue : MonoBehaviour
 
     public void nextSentence()
     {
-        
-
 
 
 
@@ -104,10 +101,9 @@ public class Monologue : MonoBehaviour
         else
         {
 
-            previousInt = currentIndex;
-            currentIndex++;
-            currentMonologue.charcterSprite[previousInt].enabled = false;
-            currentMonologue.charcterSprite[currentIndex].enabled = true;
+
+
+    
             string dialogue = dialoguePiece.Dequeue();
             StopCoroutine(LetterByLetter(dialogue));
             StartCoroutine(LetterByLetter(dialogue));
@@ -121,9 +117,21 @@ public class Monologue : MonoBehaviour
     IEnumerator LetterByLetter(string sentence)
     {
               int letterCount = 0;
-            mainCharacter.subjectText.text = "";
+        Debug.Log(previousInt);
+        Debug.Log(currentIndex);
+        previousInt = currentIndex;
+        currentIndex++;
+        Debug.Log(previousInt);
+        Debug.Log(currentIndex);
+        currentMonologue.charcterSprite[previousInt].gameObject.SetActive(false);
+        currentMonologue.charcterSprite[currentIndex].gameObject.SetActive(true);
 
-            foreach (char letter in sentence.ToCharArray())
+        mainCharacter.subjectText.text = "";
+     
+     
+
+
+        foreach (char letter in sentence.ToCharArray())
             {
              mainCharacter.subjectText.text += letter;
             StaticVariables.dialogueTextprogressing = true;
@@ -152,21 +160,25 @@ public class Monologue : MonoBehaviour
 
 
 
-
     }
     IEnumerator DialogueEnd()
     {
 
+ 
 
             currentIndex = 0;
             previousInt = 0;
-            currentMonologue.charcterSprite[previousInt].enabled = false;
-            currentMonologue.charcterSprite[currentIndex].enabled = false;
-            StaticVariables.promptInterogation = false;
+        StaticVariables.promptInterogation = false;
             StaticVariables.promptInterogation = false;
             StaticVariables.initialInteraction = false;
             yield return new WaitForSeconds(0.3f);
+
             mainCharacter.textBox.SetActive(false);
+       
+        for(int i = 0; i < currentMonologue.charcterSprite.Length; i++)
+        {
+            currentMonologue.charcterSprite[i].gameObject.SetActive(false);
+        }
             StaticVariables.itemInteraction = false;
             StaticVariables.isConversing = false;
              nextThought = true;

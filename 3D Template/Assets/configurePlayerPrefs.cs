@@ -29,5 +29,7 @@ public class configurePlayerPrefs : MonoBehaviour
         {
             Debug.Log($" you have selected she/her/hers pronouns! and your name is {StaticVariables.playerName}");
         }
+
+
     }
 }

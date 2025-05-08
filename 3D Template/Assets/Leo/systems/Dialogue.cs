@@ -9,7 +9,8 @@ public class Dialogue
     public string mc_CharacterResponse;
     public bool playerResponse;
     public int queueCount;
-    public Image[] charcterSprite; 
+    public Image[] charcterSprite;
+    public Image[] F_Sprites;
 
 
 
